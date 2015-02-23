@@ -24,14 +24,14 @@ public class Conexion extends SQLiteOpenHelper{
 		
 	}
 	
-	public void InsertarSerie (SQLiteDatabase db, String title, String content){
+	public void InsertNote (SQLiteDatabase db, String title, String content){
 	SQLiteStatement pst = db.compileStatement("INSERT INTO notes (title, content) VALUES (?,?)");
 	pst.bindString(1, title);
 	pst.bindString(2, content);
 	pst.execute();
 	}
 	
-	public void borrarSerie(int id) {
+	public void deleteNote(int id) {
 	    SQLiteDatabase db = getWritableDatabase();
 	    db.delete("notes", "id="+id, null);
 	    db.close();  
