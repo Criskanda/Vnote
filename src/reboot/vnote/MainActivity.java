@@ -1,6 +1,9 @@
-package com.example.serieadicto;
+package reboot.vnote;
 
 import java.util.ArrayList;
+
+import reboot.vnote.R;
+
 
 import android.app.ActionBar;
 import android.app.Activity;
