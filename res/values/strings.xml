@@ -13,6 +13,9 @@
     <string name="note_title">Note title</string>
     <string name="tv_content">Content</string>
     <string name="note_content">Contents of the note</string>
+    <string name="save">Save</string>
+    <string name="speach">Speach</string>
+    <string name="listen">Listen</string>
 
 
 </resources>
