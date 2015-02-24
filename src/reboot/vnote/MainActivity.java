@@ -1,5 +1,6 @@
 package reboot.vnote;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -49,23 +50,22 @@ public class MainActivity extends Activity {
 		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
 				getApplicationContext(),
 				android.R.layout.simple_expandable_list_item_1, list);
+
 		lvNotes.setAdapter(adapt);
 
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-	
+
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
-			 //Note a = list[position];
+				OpenNote(list.get(position));
 			}
-			
-			
+
 		});
 	}
 
@@ -85,9 +85,6 @@ public class MainActivity extends Activity {
 		case R.id.search:
 			// metodoSearch()
 			return true;
-		case R.id.edit:
-			// metodoEdit()
-			return true;
 		case R.id.delete:
 			// metodoDelete()
 			return true;
@@ -102,5 +99,12 @@ public class MainActivity extends Activity {
 	private void metodoAdd() {
 		Intent newSerie = new Intent(MainActivity.this, NoteActivity.class);
 		startActivity(newSerie);
+	}
+	
+	private void OpenNote(Note note){
+		Intent i = new Intent(MainActivity.this,NoteActivity.class);
+		i.putExtra("note", (Serializable)note);
+		startActivity(i);
+		
 	}
 }
