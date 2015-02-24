@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,6 +55,18 @@ public class MainActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+	
+		lvNotes.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+			 //Note a = list[position];
+			}
+			
+			
+		});
 	}
 
 	@Override
@@ -84,7 +100,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void metodoAdd() {
-		// Intent newSerie =new Intent(MainActivity.this, NuevaSerie.class);
-		// startActivity(newSerie);
+		Intent newSerie = new Intent(MainActivity.this, NoteActivity.class);
+		startActivity(newSerie);
 	}
 }
