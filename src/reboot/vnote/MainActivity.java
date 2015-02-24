@@ -6,13 +6,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ddbb.Conexion;
 import ddbb.Note;
@@ -29,8 +27,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		RelativeLayout ventana = (RelativeLayout) findViewById(R.id.main_activity);
-		ventana.setBackgroundColor(Color.BLACK);
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
 
