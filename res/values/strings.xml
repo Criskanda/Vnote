@@ -9,6 +9,10 @@
     <string name="edit">Edit</string>
     <string name="title_activity_new_note">New note</string>
     <string name="notes">Notes</string>
+    <string name="tv_tittle">Title</string>
+    <string name="note_title">Note title</string>
+    <string name="tv_content">Content</string>
+    <string name="note_content">Contents of the note</string>
 
 
 </resources>
