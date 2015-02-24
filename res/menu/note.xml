@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:title="Guardar"/>
+    <item
+        android:id="@+id/speach"
+        android:icon="@android:drawable/ic_btn_speak_now"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:title="Dictar"/>
+    <item
+        android:id="@+id/listen"
+        android:icon="@android:drawable/ic_lock_silent_mode_off"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:title="Dictar"/>
+    <item
+        android:id="@+id/delete"
+        android:orderInCategory="4"
+        android:showAsAction="never"
+        android:title="Delete Note"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+
+</menu>
