@@ -33,11 +33,11 @@ public class Note {
         this.title = title;
     }
     // getting content
-    public String getcontent(){
+    public String getContent(){
         return this.content;
     }
     //setting content
-    public void setcontent(String content){
+    public void setContent(String content){
         this.content = content;
     }
     
