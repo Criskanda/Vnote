@@ -12,6 +12,12 @@ public class Note {
         this.content = content;
     }
     
+    public Note(int id,String title){
+    	super();
+    	this.id = id;
+        this.title = title;
+    }
+    
     public int getId(){
         return this.id;
     }
