@@ -1,6 +1,5 @@
 package reboot.vnote;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -38,11 +37,11 @@ public class MainActivity extends Activity {
 		Conexion con = new Conexion(getApplicationContext(), "DBNotes.db",
 				null, 1);
 		db = con.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT * FROM notes", null);
-
+		Cursor c = db.rawQuery("SELECT id, title FROM notes", null);
+		
 		if (c.moveToFirst()) {
 			do {
-				nota = new Note(c.getShort(0), c.getString(1), c.getString(2));
+				nota = new Note(c.getShort(0), c.getString(1));
 				list.add(nota);
 			} while (c.moveToNext());
 		}
@@ -103,7 +102,7 @@ public class MainActivity extends Activity {
 	
 	private void OpenNote(Note note){
 		Intent i = new Intent(MainActivity.this,NoteActivity.class);
-		i.putExtra("note", (Serializable)note);
+		i.putExtra("id", note.getId());
 		startActivity(i);
 		
 	}
