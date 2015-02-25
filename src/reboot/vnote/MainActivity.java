@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 				null, 1);
 		db = con.getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT id, title FROM notes", null);
-		
+
 		if (c.moveToFirst()) {
 			do {
 				nota = new Note(c.getShort(0), c.getString(1));
@@ -99,11 +99,11 @@ public class MainActivity extends Activity {
 		Intent newSerie = new Intent(MainActivity.this, NoteActivity.class);
 		startActivity(newSerie);
 	}
-	
-	private void OpenNote(Note note){
-		Intent i = new Intent(MainActivity.this,NoteActivity.class);
+
+	private void OpenNote(Note note) {
+		Intent i = new Intent(MainActivity.this, NoteActivity.class);
 		i.putExtra("id", note.getId());
 		startActivity(i);
-		
+
 	}
 }
