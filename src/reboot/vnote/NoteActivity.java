@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -31,18 +32,24 @@ public class NoteActivity extends Activity {
 		db = con.getWritableDatabase();
 
 		if (thisIntent.hasExtra("id")) {
-			noteOpen = FillFields(thisIntent.getExtras().getInt("id") + "");
+			Log.e("ID!!!!!!!!!!!!!!!!!!!",thisIntent.getExtras().getInt("id")+"");
+
+			noteOpen = FillFields(thisIntent.getExtras().getInt("id"));
 		}
 
 	}
 
-	private Note FillFields(String id) {
+	private Note FillFields(int id) {
 
-		Cursor c = db.rawQuery("SELECT * FROM notes WHERE id =" + id, null);
-
-		Note note_from_select = new Note(c.getShort(0), c.getString(1),
-				c.getString(2));
-
+		Cursor c = db.rawQuery("SELECT * FROM notes WHERE id =?",new String[] {id+""});
+		System.out.println(c);
+		Note note_from_select = null;
+		if (c.moveToFirst()) { 
+			do { 
+				note_from_select = new Note(c.getInt(0), c.getString(1),
+						c.getString(2));
+			} while (c.moveToNext());
+		}
 		ETtittle.setText(note_from_select.getTitle());
 		ETcontent.setText(note_from_select.getContent());
 		return note_from_select;
@@ -141,7 +148,7 @@ public class NoteActivity extends Activity {
 						.println("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 
