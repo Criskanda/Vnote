@@ -76,10 +76,22 @@ public class NoteActivity extends Activity {
 	}
 
 	private void CheckTypeNoteAndSave() {
-		if (CheckFields() && noteOpen != null) {
-			UpdateNote();
-		} else {
-			// INSERT
+		if (CheckFields()) {
+			if (noteOpen != null) {
+				if (UpdateNote()) {
+					Toast.makeText(this, "Save Successfully", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG)
+							.show();
+				}
+			} else if (InsertNote()) {
+				Toast.makeText(this, "Save Successfully", Toast.LENGTH_LONG)
+						.show();
+			} else {
+				Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG)
+						.show();
+			}
 		}
 	}
 
@@ -97,13 +109,51 @@ public class NoteActivity extends Activity {
 
 	}
 
-	private void UpdateNote() {
+	private boolean UpdateNote() {
 		String idNote = noteOpen.getId() + "";
 		String tittle = ETtittle.getText().toString().trim();
 		String content = ETcontent.getText().toString().trim();
+		if (!titleExist(tittle)) {
+			try {
+				db.rawQuery("UPDATE notes set id=" + idNote + ",title='"
+						+ tittle + "',content ='" + content + "' WHERE "
+						+ "id=" + idNote, null);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
 
-		db.rawQuery("UPDATE notes set id=" + idNote + ",title='" + tittle
-				+ "',content ='" + content + "' WHERE " + "id=" + idNote, null);
+	}
 
+	private boolean InsertNote() {
+		String tittle = ETtittle.getText().toString().trim();
+		String content = ETcontent.getText().toString().trim();
+		if (!titleExist(tittle)) {
+			try {
+				db.rawQuery("INSERT INTO notes VALUES ('','" + tittle + "','"
+						+ content + "')", null);
+				return true;
+			} catch (Exception e) {
+				System.out
+						.println("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
+				return false;
+			}
+		}else{
+			return false;
+		}
+
+	}
+
+	private boolean titleExist(String title) {
+		Cursor c = db.rawQuery("SELECT title FROM notes WHERE title='" + title
+				+ "'", null);
+		if (c != null && c.getCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
