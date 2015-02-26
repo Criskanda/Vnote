@@ -14,17 +14,21 @@ import ddbb.Note;
 
 public class NoteActivity extends Activity {
 
-	EditText tittle, content;
+	EditText ETtittle, ETcontent;
 	Note noteOpen;
+	Conexion con;
+	SQLiteDatabase db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
 
-		tittle = (EditText) findViewById(R.id.et_title);
-		content = (EditText) findViewById(R.id.et_content);
+		ETtittle = (EditText) findViewById(R.id.et_title);
+		ETcontent = (EditText) findViewById(R.id.et_content);
 		Intent thisIntent = getIntent();
+		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
+		db = con.getWritableDatabase();
 
 		if (thisIntent.hasExtra("id")) {
 			noteOpen = FillFields(thisIntent.getExtras().getInt("id") + "");
@@ -33,16 +37,14 @@ public class NoteActivity extends Activity {
 	}
 
 	private Note FillFields(String id) {
-		Conexion con = new Conexion(getApplicationContext(), "DBNotes.db",
-				null, 1);
-		SQLiteDatabase db = con.getWritableDatabase();
+
 		Cursor c = db.rawQuery("SELECT * FROM notes WHERE id =" + id, null);
 
 		Note note_from_select = new Note(c.getShort(0), c.getString(1),
 				c.getString(2));
 
-		tittle.setText(note_from_select.getTitle());
-		content.setText(note_from_select.getContent());
+		ETtittle.setText(note_from_select.getTitle());
+		ETcontent.setText(note_from_select.getContent());
 		return note_from_select;
 
 	}
@@ -60,7 +62,7 @@ public class NoteActivity extends Activity {
 			this.finish();
 			return true;
 		case R.id.save:
-			// metodoSave()
+			CheckTypeNoteAndSave();
 			return true;
 		case R.id.speach:
 			// metodoSpeach()
@@ -73,17 +75,17 @@ public class NoteActivity extends Activity {
 		}
 	}
 
-	private void CheckTypeNote() {
+	private void CheckTypeNoteAndSave() {
 		if (CheckFields() && noteOpen != null) {
-			//UPDATE
-		}else{
-			//INSERT
+			UpdateNote();
+		} else {
+			// INSERT
 		}
 	}
 
 	private boolean CheckFields() {
-		String s1 = tittle.getText().toString().trim();
-		String s2 = content.getText().toString().trim();
+		String s1 = ETtittle.getText().toString().trim();
+		String s2 = ETcontent.getText().toString().trim();
 
 		if (s1.length() == 0 || s2.length() == 0) {
 			Toast.makeText(this, "Someone fields is empty", Toast.LENGTH_LONG)
@@ -95,4 +97,13 @@ public class NoteActivity extends Activity {
 
 	}
 
+	private void UpdateNote() {
+		String idNote = noteOpen.getId() + "";
+		String tittle = ETtittle.getText().toString().trim();
+		String content = ETcontent.getText().toString().trim();
+
+		db.rawQuery("UPDATE notes set id=" + idNote + ",title='" + tittle
+				+ "',content ='" + content + "' WHERE " + "id=" + idNote, null);
+
+	}
 }
