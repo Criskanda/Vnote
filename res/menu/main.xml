@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.serieadicto.MainActivity" >
 
-
     <item
         android:id="@+id/search"
         android:actionViewClass="android.widget.SearchView"
@@ -21,7 +20,7 @@
         android:orderInCategory="4"
         android:showAsAction="never"
         android:title="@string/delete"/>
-        <item
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
