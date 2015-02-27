@@ -47,7 +47,8 @@
             android:layout_marginTop="184dp"
             android:ems="10"
             android:hint="@string/note_content"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textView1"
