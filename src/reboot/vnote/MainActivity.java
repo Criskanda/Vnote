@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 				null, 1);
 		db = con.getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT id, title FROM notes", null);
-		con.InsertNote(db, "TITULO", "CONTENIDO");
+		con.InsertNote(db, "TITULO2", "CONTENIDO2");
 		if (c.moveToFirst()) {
 			do {
 				nota = new Note(c.getShort(0), c.getString(1));
@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 
 	private void OpenNote(Note note) {
 		Intent i = new Intent(MainActivity.this, NoteActivity.class);
-		i.putExtra("id", note.getId());
+		i.putExtra("title", note.getTitle());
 		startActivity(i);
 
 	}
