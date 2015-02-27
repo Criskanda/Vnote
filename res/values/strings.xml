@@ -9,12 +9,12 @@
     <string name="edit">Edit</string>
     <string name="title_activity_new_note">New note</string>
     <string name="notes">Notes</string>
-    <string name="tv_tittle">Title</string>
+    <string name="tv_tittle"><u>Title</u></string>
     <string name="note_title">Note title</string>
-    <string name="tv_content">Content</string>
+    <string name="tv_content"><u>Content</u></string>
     <string name="note_content">Contents of the note</string>
     <string name="save">Save</string>
-    <string name="speach">Speach</string>
+    <string name="speach">Speech</string>
     <string name="listen">Listen</string>
 
 
