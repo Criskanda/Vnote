@@ -88,14 +88,14 @@ public class NoteActivity extends Activity {
 					Toast.makeText(this, "Save Successfully",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT)
+					Toast.makeText(this, "Already exist a note With That title", Toast.LENGTH_SHORT)
 							.show();
 				}
 			} else if (InsertNote()) {
 				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT)
+				Toast.makeText(this, "Already exist a note With That title", Toast.LENGTH_SHORT)
 						.show();
 			}
 		}
