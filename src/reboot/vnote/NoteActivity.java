@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -31,21 +30,20 @@ public class NoteActivity extends Activity {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 
-		if (thisIntent.hasExtra("id")) {
-			Log.e("ID!!!!!!!!!!!!!!!!!!!",thisIntent.getExtras().getInt("id")+"");
-
-			noteOpen = FillFields(thisIntent.getExtras().getInt("id"));
+		if (thisIntent.hasExtra("title")) {
+			noteOpen = FillFields(thisIntent.getExtras().getString("title"));
 		}
 
 	}
 
-	private Note FillFields(int id) {
+	private Note FillFields(String title) {
 
-		Cursor c = db.rawQuery("SELECT * FROM notes WHERE id =?",new String[] {id+""});
-		System.out.println(c);
+		Cursor c = db.rawQuery("SELECT * FROM notes WHERE title = ?",
+				new String[] { title });
+		System.out.println(c.getCount());
 		Note note_from_select = null;
-		if (c.moveToFirst()) { 
-			do { 
+		if (c.moveToFirst()) {
+			do {
 				note_from_select = new Note(c.getInt(0), c.getString(1),
 						c.getString(2));
 			} while (c.moveToNext());
@@ -86,17 +84,17 @@ public class NoteActivity extends Activity {
 		if (CheckFields()) {
 			if (noteOpen != null) {
 				if (UpdateNote()) {
-					Toast.makeText(this, "Save Successfully", Toast.LENGTH_LONG)
+					Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-					Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG)
+					Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT)
 							.show();
 				}
 			} else if (InsertNote()) {
-				Toast.makeText(this, "Save Successfully", Toast.LENGTH_LONG)
+				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG)
+				Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT)
 						.show();
 			}
 		}
@@ -107,7 +105,7 @@ public class NoteActivity extends Activity {
 		String s2 = ETcontent.getText().toString().trim();
 
 		if (s1.length() == 0 || s2.length() == 0) {
-			Toast.makeText(this, "Someone fields is empty", Toast.LENGTH_LONG)
+			Toast.makeText(this, "Someone fields is empty", Toast.LENGTH_SHORT)
 					.show();
 			return false;
 		} else {
@@ -155,12 +153,9 @@ public class NoteActivity extends Activity {
 	}
 
 	private boolean titleExist(String title) {
-		Cursor c = db.rawQuery("SELECT title FROM notes WHERE title='" + title
-				+ "'", null);
-		if (c != null && c.getCount() > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		 Cursor cursor = db.rawQuery("SELECT 1 FROM notes WHERE title=?", new String[] {title});
+		 cursor.close();
+		 return cursor.moveToFirst();
+		
 	}
 }
