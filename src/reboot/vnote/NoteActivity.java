@@ -1,6 +1,7 @@
 package reboot.vnote;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -84,8 +85,8 @@ public class NoteActivity extends Activity {
 		if (CheckFields()) {
 			if (noteOpen != null) {
 				if (UpdateNote()) {
-					Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(this, "Save Successfully",
+							Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT)
 							.show();
@@ -116,46 +117,59 @@ public class NoteActivity extends Activity {
 
 	private boolean UpdateNote() {
 		String idNote = noteOpen.getId() + "";
-		String tittle = ETtittle.getText().toString().trim();
+		String title = ETtittle.getText().toString().trim();
+		title = title.substring(0, 1).toUpperCase() + title.substring(1);
 		String content = ETcontent.getText().toString().trim();
-		if (!titleExist(tittle)) {
-			try {
-				db.rawQuery("UPDATE notes set id=" + idNote + ",title='"
-						+ tittle + "',content ='" + content + "' WHERE "
-						+ "id=" + idNote, null);
+		if (!title.equals(noteOpen.getTitle())) { //Si el titulo en el ET NO es igual al original COMPRUEBA
+			if (!titleExist(title)) {
+				ContentValues upd = new ContentValues();
+				upd.put("id",idNote); //These Fields should be your String values of actual column names
+				upd.put("title",title);
+				upd.put("content",content);
+				db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
 				return true;
-			} catch (Exception e) {
+			} else {
 				return false;
 			}
-		} else {
-			return false;
+		} else { //Si el titulo en el ED ES igual al original NO COMPRUEBA
+			ContentValues upd = new ContentValues();
+			upd.put("id",idNote); //These Fields should be your String values of actual column names
+			upd.put("title",title);
+			upd.put("content",content);
+			db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
+
+			return true;
 		}
 
 	}
 
 	private boolean InsertNote() {
-		String tittle = ETtittle.getText().toString().trim();
+		String title = ETtittle.getText().toString().trim();
+		title = title.substring(0, 1).toUpperCase() + title.substring(1);
+
 		String content = ETcontent.getText().toString().trim();
-		if (!titleExist(tittle)) {
+
+		if (!titleExist(title)) {
 			try {
-				db.rawQuery("INSERT INTO notes VALUES ('','" + tittle + "','"
-						+ content + "')", null);
+				con.InsertNote(db, title, content);
 				return true;
 			} catch (Exception e) {
-				System.out
-						.println("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
 				return false;
 			}
 		} else {
+			Toast.makeText(this, "Already exist a note with that title",
+					Toast.LENGTH_SHORT).show();
 			return false;
 		}
 
 	}
 
 	private boolean titleExist(String title) {
-		 Cursor cursor = db.rawQuery("SELECT 1 FROM notes WHERE title=?", new String[] {title});
-		 cursor.close();
-		 return cursor.moveToFirst();
-		
+		Cursor cursor = db.rawQuery("SELECT 1 FROM notes WHERE title=?",
+				new String[] { title });
+		boolean exist = cursor.moveToFirst();
+		cursor.close();
+		return exist;
+
 	}
 }
