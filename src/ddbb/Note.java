@@ -1,12 +1,10 @@
 package ddbb;
 
-import java.sql.Date;
 
 public class Note {
 
 	private int id;
-    private String title, content;
-    private Date date;
+    private String title, content,date;
     
  
 	public Note(int id,String title, String content){
@@ -44,11 +42,11 @@ public class Note {
     public void setContent(String content){
         this.content = content;
     }
-    public Date getDate() {
+    public String getDate() {
  		return date;
  	}
 
- 	public void setDate(Date date) {
+ 	public void setDate(String date) {
  		this.date = date;
  	}
 
