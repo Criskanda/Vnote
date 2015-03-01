@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 				null, 1);
 		db = con.getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT id, title FROM notes", null);
-		con.InsertNote(db, "TITULO2", "CONTENIDO2");
+		con.InsertNote(db, "TITULO2", "CONTENIDO2",con.getToday());
 		if (c.moveToFirst()) {
 			do {
 				nota = new Note(c.getShort(0), c.getString(1));
