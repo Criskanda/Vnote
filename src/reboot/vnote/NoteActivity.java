@@ -126,6 +126,7 @@ public class NoteActivity extends Activity {
 				upd.put("id",idNote); //These Fields should be your String values of actual column names
 				upd.put("title",title);
 				upd.put("content",content);
+				upd.put("date", noteOpen.getDate());
 				db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
 				return true;
 			} else {
@@ -136,6 +137,7 @@ public class NoteActivity extends Activity {
 			upd.put("id",idNote); //These Fields should be your String values of actual column names
 			upd.put("title",title);
 			upd.put("content",content);
+			upd.put("date", noteOpen.getDate());
 			db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
 
 			return true;
@@ -151,7 +153,7 @@ public class NoteActivity extends Activity {
 
 		if (!titleExist(title)) {
 			try {
-				con.InsertNote(db, title, content);
+				con.InsertNote(db, title, content,con.getToday());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -170,6 +172,7 @@ public class NoteActivity extends Activity {
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 		return exist;
-
 	}
+	
+	
 }
