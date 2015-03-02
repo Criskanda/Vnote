@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
 	SQLiteDatabase db;
 	TextView tvNotes;
 	Conexion con;
+	boolean EDITMODE = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,26 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-				if (checked.get(position) == false) {
-					lvNotes.setItemChecked(position, true);
-					OpenNote(list.get(position));
+				if (EDITMODE) {
+					SparseBooleanArray checked = lvNotes
+							.getCheckedItemPositions();
+					if (checked.get(position) == false) {
+						lvNotes.setItemChecked(position, false);
+					} else {
+						lvNotes.setItemChecked(position, true);
+					}
 				} else {
-					lvNotes.setItemChecked(position, false);
-					OpenNote(list.get(position));
+					SparseBooleanArray checked = lvNotes
+							.getCheckedItemPositions();
+					if (checked.get(position) == false) {
+						lvNotes.setItemChecked(position, true);
+						OpenNote(list.get(position));
+
+					} else {
+						lvNotes.setItemChecked(position, false);
+						OpenNote(list.get(position));
+
+					}
 				}
 			}
 		});
@@ -92,12 +106,15 @@ public class MainActivity extends Activity {
 		case R.id.search:
 			// metodoSearch()
 			return true;
-		case R.id.delete:
+		case R.id.edit:
 			// Añadir metodo de borrar aqui
-			EraseNote();
+			ActivateEditMode();
 			return true;
 		case R.id.add:
 			metodoAdd();
+			return true;
+		case R.id.delete:
+			EraseNote();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -115,37 +132,45 @@ public class MainActivity extends Activity {
 		startActivity(i);
 	}
 
+	private void ActivateEditMode() {
+		if (EDITMODE) {
+			EDITMODE = false;
+		}else {
+			EDITMODE = true;
+		}
+	}
+
 	private void EraseNote() {
 		String listItemsSelected = getSelectedItems();
 		if (!listItemsSelected.equals("")) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(
-					this);
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 			alert.setTitle("Do you want to DELETE the following notes?");
 			final TextView tv_alert = new TextView(this);
 			tv_alert.setText(listItemsSelected);
 			alert.setView(tv_alert);
-			
-			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					int len = lvNotes.getCount();
-					final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-					for (int i = 0; i < len; i++) {
-						if (checked.get(i)) {
-							Note item = list.get(i);
-							con.deleteNote(item.getTitle());
+
+			alert.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							int len = lvNotes.getCount();
+							final SparseBooleanArray checked = lvNotes
+									.getCheckedItemPositions();
+							for (int i = 0; i < len; i++) {
+								if (checked.get(i)) {
+									Note item = list.get(i);
+									con.deleteNote(item.getTitle());
+								}
+							}
+							FillListView();
 						}
-					}
-					FillListView();	
-				}
-			});
-			
+					});
+
 			alert.setNegativeButton("No", null);
 			alert.show();
 
 		}
-		
 
 	}
 
@@ -169,13 +194,13 @@ public class MainActivity extends Activity {
 
 		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
 				getApplicationContext(),
-				android.R.layout.simple_list_item_activated_1, list);
+				android.R.layout.simple_list_item_multiple_choice, list);
 
 		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
 	}
 
-	private String getSelectedItems(){
+	private String getSelectedItems() {
 		String auxstr = "";
 		int len = lvNotes.getCount();
 		final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
@@ -187,6 +212,7 @@ public class MainActivity extends Activity {
 		}
 		return auxstr;
 	}
+
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
