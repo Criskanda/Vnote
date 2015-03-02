@@ -26,8 +26,10 @@
         android:id="@+id/lv_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_notes"
-        android:layout_alignParentBottom="true" >
+        android:cacheColorHint="@color/white" >
+
     </ListView>
 
 </RelativeLayout>
