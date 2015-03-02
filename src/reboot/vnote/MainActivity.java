@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,7 +42,7 @@ public class MainActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		FillListView();
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 
@@ -114,20 +116,47 @@ public class MainActivity extends Activity {
 	}
 
 	private void EraseNote() {
-		int len = lvNotes.getCount();
-		SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-		for (int i = 0; i < len; i++)
-			if (checked.get(i)) {
-				Note item = list.get(i);
-				con.deleteNote(item.getTitle());
-			}
-		FillListView();
+		String listItemsSelected = getSelectedItems();
+		if (!listItemsSelected.equals("")) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(
+					this);
+			alert.setTitle("Do you want to DELETE the following notes?");
+			final TextView tv_alert = new TextView(this);
+			tv_alert.setText(listItemsSelected);
+			alert.setView(tv_alert);
+			
+			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					int len = lvNotes.getCount();
+					final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+					for (int i = 0; i < len; i++) {
+						if (checked.get(i)) {
+							Note item = list.get(i);
+							con.deleteNote(item.getTitle());
+						}
+					}
+					FillListView();	
+				}
+			});
+			
+			alert.setNegativeButton("No", null);
+			alert.show();
+
+		}
+		
+
 	}
 
 	private void FillListView() {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 		TEST_INSERT();
+		TEST_INSERT();
+		TEST_INSERT();
+		TEST_INSERT();
+
 		Cursor a = db.rawQuery(
 				"SELECT id, title FROM notes ORDER BY date DESC", null);
 		list.clear();
@@ -145,8 +174,20 @@ public class MainActivity extends Activity {
 		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
 	}
-	
-	private void TEST_INSERT(){
+
+	private String getSelectedItems(){
+		String auxstr = "";
+		int len = lvNotes.getCount();
+		final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+		for (int i = 0; i < len; i++) {
+			if (checked.get(i)) {
+				Note item = list.get(i);
+				auxstr += item.getTitle() + "\n";
+			}
+		}
+		return auxstr;
+	}
+	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 }
