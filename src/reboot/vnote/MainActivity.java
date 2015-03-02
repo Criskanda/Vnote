@@ -18,7 +18,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -29,6 +28,7 @@ public class MainActivity extends Activity {
 	Note nota;
 	SQLiteDatabase db;
 	TextView tvNotes;
+	Conexion con;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,46 +37,39 @@ public class MainActivity extends Activity {
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
 		// ActionBar and back button.
-				ActionBar actionBar = getActionBar();
-				actionBar.setHomeButtonEnabled(true);
-				actionBar.setDisplayHomeAsUpEnabled(true);
-		Conexion con = new Conexion(getApplicationContext(), "DBNotes.db",
-				null, 1);
-		db = con.getWritableDatabase();
-		Cursor c = db.rawQuery(
-				"SELECT id, title FROM notes ORDER BY date DESC", null); // CAMBIAR DESC O ASC POR SETTINGS
-		con.InsertNote(db, "TITULO_nuevo", "titulo_nuevo", con.getToday());
-		if (c.moveToFirst()) {
-			do {
-				nota = new Note(c.getShort(0), c.getString(1));
-				list.add(nota);
-			} while (c.moveToNext());
-		}
-
-		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
-				getApplicationContext(),
-				android.R.layout.simple_list_item_multiple_choice, list);
-
-		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		lvNotes.setAdapter(adapt);
+		ActionBar actionBar = getActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		FillListView();
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				OpenNote(list.get(position));
+				SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+				if (checked.get(position) == false) {
+					lvNotes.setItemChecked(position, true);
+					OpenNote(list.get(position));
+				} else {
+					lvNotes.setItemChecked(position, false);
+					OpenNote(list.get(position));
+				}
 			}
-
 		});
-		
-		lvNotes.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+		lvNotes.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+				if (checked.get(position) == true) {
+					lvNotes.setItemChecked(position, false);
+					return true;
+				} else {
 					lvNotes.setItemChecked(position, true);
-				return false;
+					return true;
+				}
 			}
 		});
 	}
@@ -98,15 +91,8 @@ public class MainActivity extends Activity {
 			// metodoSearch()
 			return true;
 		case R.id.delete:
-			//Añadir metodo de borrar aqui
-			int len = lvNotes.getCount();
-			SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-			for (int i = 0; i < len; i++)
-			 if (checked.get(i)) {
-			  Note items= list.get(i);
-			  Toast.makeText(this, items.getTitle()+" "+i, Toast.LENGTH_SHORT).show();
- 
-			 }			
+			// Añadir metodo de borrar aqui
+			EraseNote();
 			return true;
 		case R.id.add:
 			metodoAdd();
@@ -125,6 +111,42 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(MainActivity.this, NoteActivity.class);
 		i.putExtra("title", note.getTitle());
 		startActivity(i);
+	}
 
+	private void EraseNote() {
+		int len = lvNotes.getCount();
+		SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+		for (int i = 0; i < len; i++)
+			if (checked.get(i)) {
+				Note item = list.get(i);
+				con.deleteNote(item.getTitle());
+			}
+		FillListView();
+	}
+
+	private void FillListView() {
+		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
+		db = con.getWritableDatabase();
+		TEST_INSERT();
+		Cursor a = db.rawQuery(
+				"SELECT id, title FROM notes ORDER BY date DESC", null);
+		list.clear();
+		if (a.moveToFirst()) {
+			do {
+				nota = new Note(a.getShort(0), a.getString(1));
+				list.add(nota);
+			} while (a.moveToNext());
+		}
+
+		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
+				getApplicationContext(),
+				android.R.layout.simple_list_item_activated_1, list);
+
+		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lvNotes.setAdapter(adapt);
+	}
+	
+	private void TEST_INSERT(){
+		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 }
