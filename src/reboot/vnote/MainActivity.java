@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -33,12 +36,16 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
-
+		// ActionBar and back button.
+				ActionBar actionBar = getActionBar();
+				actionBar.setHomeButtonEnabled(true);
+				actionBar.setDisplayHomeAsUpEnabled(true);
 		Conexion con = new Conexion(getApplicationContext(), "DBNotes.db",
 				null, 1);
 		db = con.getWritableDatabase();
-		Cursor c = db.rawQuery("SELECT id, title FROM notes", null);
-		con.InsertNote(db, "TITULO2", "CONTENIDO2",con.getToday());
+		Cursor c = db.rawQuery(
+				"SELECT id, title FROM notes ORDER BY date DESC", null); // CAMBIAR DESC O ASC POR SETTINGS
+		con.InsertNote(db, "TITULO_nuevo", "titulo_nuevo", con.getToday());
 		if (c.moveToFirst()) {
 			do {
 				nota = new Note(c.getShort(0), c.getString(1));
@@ -48,15 +55,11 @@ public class MainActivity extends Activity {
 
 		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
 				getApplicationContext(),
-				android.R.layout.simple_expandable_list_item_1, list);
+				android.R.layout.simple_list_item_multiple_choice, list);
 
+		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
-
-		// ActionBar and back button.
-		ActionBar actionBar = getActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -65,6 +68,16 @@ public class MainActivity extends Activity {
 				OpenNote(list.get(position));
 			}
 
+		});
+		
+		lvNotes.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+					lvNotes.setItemChecked(position, true);
+				return false;
+			}
 		});
 	}
 
@@ -85,7 +98,15 @@ public class MainActivity extends Activity {
 			// metodoSearch()
 			return true;
 		case R.id.delete:
-			// metodoDelete()
+			//Añadir metodo de borrar aqui
+			int len = lvNotes.getCount();
+			SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+			for (int i = 0; i < len; i++)
+			 if (checked.get(i)) {
+			  Note items= list.get(i);
+			  Toast.makeText(this, items.getTitle()+" "+i, Toast.LENGTH_SHORT).show();
+ 
+			 }			
 			return true;
 		case R.id.add:
 			metodoAdd();
