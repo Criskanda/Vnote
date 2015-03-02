@@ -37,9 +37,9 @@ public class Conexion extends SQLiteOpenHelper{
 	pst.execute();
 	}
 	
-	public void deleteNote(int id) {
+	public void deleteNote(String title) {
 	    SQLiteDatabase db = getWritableDatabase();
-	    db.delete("notes", "id="+id, null);
+	    db.delete("notes", "title='"+title+"'", null);
 	    db.close();  
 	}
 	public String getToday(){
