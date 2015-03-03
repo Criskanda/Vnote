@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,6 +24,8 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import ddbb.Conexion;
 import ddbb.Note;
@@ -34,7 +38,7 @@ public class MainActivity extends Activity {
 	SQLiteDatabase db;
 	TextView tvNotes;
 	Conexion con;
-	boolean EDITMODE = false;
+	private String lastQuery = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,9 @@ public class MainActivity extends Activity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
 		FillListView();
+
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -57,14 +63,12 @@ public class MainActivity extends Activity {
 		});
 
 		lvNotes.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v,
 					ContextMenuInfo menuInfo) {
 				// Coje los datos del activity menu creada
 				MenuInflater inflater = getMenuInflater();
 				inflater.inflate(R.menu.context_main, menu);
-
 			}
 		});
 	}
@@ -72,6 +76,39 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+		SearchView search = (SearchView) menu.findItem(R.id.search)
+				.getActionView();
+
+		search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+		search.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				if (query.trim().equals("")) {
+					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+				} else {
+					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
+							+ query + "%'");
+				}
+				FillListView();
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if (newText.trim().equals("")) {
+					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+				} else {
+					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
+							+ newText + "%'");
+				}
+				FillListView();
+				return false;
+			}
+
+		});
 		return true;
 	}
 
@@ -80,9 +117,6 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			this.finish();
-			return true;
-		case R.id.search:
-			// metodoSearch()
 			return true;
 		case R.id.edit:
 			SelectItemsActivity();
@@ -120,7 +154,7 @@ public class MainActivity extends Activity {
 		FillListView();
 	}
 
-	private void EraseOneNote(int position){
+	private void EraseOneNote(int position) {
 		final Note note = list.get(position);
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle("Do you want to DELETE the following note?");
@@ -128,14 +162,13 @@ public class MainActivity extends Activity {
 		tv_alert.setText(note.getTitle());
 		alert.setView(tv_alert);
 
-		alert.setPositiveButton("Yes",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						con.deleteNote(note.getTitle());
-						FillListView();
-					}
-				});
+		alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				con.deleteNote(note.getTitle());
+				FillListView();
+			}
+		});
 		alert.setNegativeButton("No", null);
 		alert.show();
 	}
@@ -155,13 +188,11 @@ public class MainActivity extends Activity {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 		TEST_INSERT();
-
-		Cursor a = db.rawQuery(
-				"SELECT id, title FROM notes ORDER BY date DESC", null);
+		Cursor a = db.rawQuery(getLastQuery(), null);
 		list.clear();
 		if (a.moveToFirst()) {
 			do {
-				nota = new Note(a.getShort(0), a.getString(1));
+				nota = new Note(a.getString(1));
 				list.add(nota);
 			} while (a.moveToNext());
 		}
@@ -173,10 +204,19 @@ public class MainActivity extends Activity {
 
 	private void SelectItemsActivity() {
 		Intent newSerie = new Intent(MainActivity.this, SelectItems.class);
+		newSerie.putExtra("lastQuery", getLastQuery());
 		startActivity(newSerie);
 	}
 
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
+	}
+
+	public String getLastQuery() {
+		return lastQuery;
+	}
+
+	public void setLastQuery(String lastQuery) {
+		this.lastQuery = lastQuery;
 	}
 }
