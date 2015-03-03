@@ -10,13 +10,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,46 +49,22 @@ public class MainActivity extends Activity {
 
 		FillListView();
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if (EDITMODE) {
-					SparseBooleanArray checked = lvNotes
-							.getCheckedItemPositions();
-					if (checked.get(position) == false) {
-						lvNotes.setItemChecked(position, false);
-					} else {
-						lvNotes.setItemChecked(position, true);
-					}
-				} else {
-					SparseBooleanArray checked = lvNotes
-							.getCheckedItemPositions();
-					if (checked.get(position) == false) {
-						lvNotes.setItemChecked(position, true);
-						OpenNote(list.get(position));
-
-					} else {
-						lvNotes.setItemChecked(position, false);
-						OpenNote(list.get(position));
-
-					}
-				}
+				OpenNote(list.get(position));
 			}
 		});
 
-		lvNotes.setOnItemLongClickListener(new OnItemLongClickListener() {
+		lvNotes.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-				if (checked.get(position) == true) {
-					lvNotes.setItemChecked(position, false);
-					return true;
-				} else {
-					lvNotes.setItemChecked(position, true);
-					return true;
-				}
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				// Coje los datos del activity menu creada
+				MenuInflater inflater = getMenuInflater();
+				inflater.inflate(R.menu.context_main, menu);
+
 			}
 		});
 	}
@@ -100,25 +79,65 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// app icon in action bar clicked; goto parent activity.
 			this.finish();
 			return true;
 		case R.id.search:
 			// metodoSearch()
 			return true;
 		case R.id.edit:
-			// Añadir metodo de borrar aqui
-			ActivateEditMode();
+			SelectItemsActivity();
 			return true;
 		case R.id.add:
 			metodoAdd();
 			return true;
-		case R.id.delete:
-			EraseNote();
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.send:
+			// method listen
+			return true;
+		case R.id.delete:
+			EraseOneNote(menuInfo.position);
+			return true;
+		case R.id.listen:
+			// method listen
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		FillListView();
+	}
+
+	private void EraseOneNote(int position){
+		final Note note = list.get(position);
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle("Do you want to DELETE the following note?");
+		final TextView tv_alert = new TextView(this);
+		tv_alert.setText(note.getTitle());
+		alert.setView(tv_alert);
+
+		alert.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						con.deleteNote(note.getTitle());
+						FillListView();
+					}
+				});
+		alert.setNegativeButton("No", null);
+		alert.show();
 	}
 
 	private void metodoAdd() {
@@ -132,54 +151,9 @@ public class MainActivity extends Activity {
 		startActivity(i);
 	}
 
-	private void ActivateEditMode() {
-		if (EDITMODE) {
-			EDITMODE = false;
-		}else {
-			EDITMODE = true;
-		}
-	}
-
-	private void EraseNote() {
-		String listItemsSelected = getSelectedItems();
-		if (!listItemsSelected.equals("")) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("Do you want to DELETE the following notes?");
-			final TextView tv_alert = new TextView(this);
-			tv_alert.setText(listItemsSelected);
-			alert.setView(tv_alert);
-
-			alert.setPositiveButton("Yes",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							int len = lvNotes.getCount();
-							final SparseBooleanArray checked = lvNotes
-									.getCheckedItemPositions();
-							for (int i = 0; i < len; i++) {
-								if (checked.get(i)) {
-									Note item = list.get(i);
-									con.deleteNote(item.getTitle());
-								}
-							}
-							FillListView();
-						}
-					});
-
-			alert.setNegativeButton("No", null);
-			alert.show();
-
-		}
-
-	}
-
 	private void FillListView() {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
-		TEST_INSERT();
-		TEST_INSERT();
-		TEST_INSERT();
 		TEST_INSERT();
 
 		Cursor a = db.rawQuery(
@@ -191,26 +165,15 @@ public class MainActivity extends Activity {
 				list.add(nota);
 			} while (a.moveToNext());
 		}
-
 		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
-				getApplicationContext(),
-				android.R.layout.simple_list_item_multiple_choice, list);
-
-		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+				getApplicationContext(), android.R.layout.simple_list_item_1,
+				list);
 		lvNotes.setAdapter(adapt);
 	}
 
-	private String getSelectedItems() {
-		String auxstr = "";
-		int len = lvNotes.getCount();
-		final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
-		for (int i = 0; i < len; i++) {
-			if (checked.get(i)) {
-				Note item = list.get(i);
-				auxstr += item.getTitle() + "\n";
-			}
-		}
-		return auxstr;
+	private void SelectItemsActivity() {
+		Intent newSerie = new Intent(MainActivity.this, SelectItems.class);
+		startActivity(newSerie);
 	}
 
 	private void TEST_INSERT() {
