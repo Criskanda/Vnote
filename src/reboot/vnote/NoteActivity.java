@@ -1,5 +1,6 @@
 package reboot.vnote;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -24,7 +25,11 @@ public class NoteActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
-
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		ETtittle = (EditText) findViewById(R.id.et_title);
 		ETcontent = (EditText) findViewById(R.id.et_content);
 		Intent thisIntent = getIntent();
@@ -88,15 +93,16 @@ public class NoteActivity extends Activity {
 					Toast.makeText(this, "Save Successfully",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(this, "Already exist a note With That title", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(this,
+							"Already exist a note With That title",
+							Toast.LENGTH_SHORT).show();
 				}
 			} else if (InsertNote()) {
 				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(this, "Already exist a note With That title", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(this, "Already exist a note With That title",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -120,25 +126,31 @@ public class NoteActivity extends Activity {
 		String title = ETtittle.getText().toString().trim();
 		title = title.substring(0, 1).toUpperCase() + title.substring(1);
 		String content = ETcontent.getText().toString().trim();
-		if (!title.equals(noteOpen.getTitle())) { //Si el titulo en el ET NO es igual al original COMPRUEBA
+		if (!title.equals(noteOpen.getTitle())) { // Si el titulo en el ET NO es
+													// igual al original
+													// COMPRUEBA
 			if (!titleExist(title)) {
 				ContentValues upd = new ContentValues();
-				upd.put("id",idNote); //These Fields should be your String values of actual column names
-				upd.put("title",title);
-				upd.put("content",content);
+				upd.put("id", idNote); // These Fields should be your String
+										// values of actual column names
+				upd.put("title", title);
+				upd.put("content", content);
 				upd.put("date", noteOpen.getDate());
-				db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
+				db.update("notes", upd, "title " + "='" + noteOpen.getTitle()
+						+ "'", null);
 				return true;
 			} else {
 				return false;
 			}
-		} else { //Si el titulo en el ED ES igual al original NO COMPRUEBA
+		} else { // Si el titulo en el ED ES igual al original NO COMPRUEBA
 			ContentValues upd = new ContentValues();
-			upd.put("id",idNote); //These Fields should be your String values of actual column names
-			upd.put("title",title);
-			upd.put("content",content);
+			upd.put("id", idNote); // These Fields should be your String values
+									// of actual column names
+			upd.put("title", title);
+			upd.put("content", content);
 			upd.put("date", noteOpen.getDate());
-			db.update("notes", upd, "title "+"='"+noteOpen.getTitle()+"'", null);
+			db.update("notes", upd,
+					"title " + "='" + noteOpen.getTitle() + "'", null);
 
 			return true;
 		}
@@ -153,7 +165,7 @@ public class NoteActivity extends Activity {
 
 		if (!titleExist(title)) {
 			try {
-				con.InsertNote(db, title, content,con.getToday());
+				con.InsertNote(db, title, content, con.getToday());
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -173,6 +185,5 @@ public class NoteActivity extends Activity {
 		cursor.close();
 		return exist;
 	}
-	
-	
+
 }
