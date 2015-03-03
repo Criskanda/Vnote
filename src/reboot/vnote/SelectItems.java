@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.SearchView.OnQueryTextListener;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -26,6 +31,8 @@ public class SelectItems extends Activity {
 	SQLiteDatabase db;
 	TextView tvNotes;
 	Conexion con;
+	private String lastQuery = "";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +44,48 @@ public class SelectItems extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		Intent thisIntent = getIntent();
+		setLastQuery(thisIntent.getExtras().getString("lastQuery"));
 		FillListView();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.select, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
+		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+		SearchView search = (SearchView) menu.findItem(R.id.search)
+				.getActionView();
+
+		search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+		search.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				if (query.trim().equals("")) {
+					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+				} else {
+					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
+							+ query + "%'");
+				}
+				FillListView();
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if (newText.trim().equals("")) {
+					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+				} else {
+					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
+							+ newText + "%'");
+				}
+				FillListView();
+				return false;
+			}
+
+		});
 		return true;
 	}
 
@@ -80,13 +123,11 @@ public class SelectItems extends Activity {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 		TEST_INSERT();
-
-		Cursor a = db.rawQuery(
-				"SELECT id, title FROM notes ORDER BY date DESC", null);
+		Cursor a = db.rawQuery(getLastQuery(), null);
 		list.clear();
 		if (a.moveToFirst()) {
 			do {
-				nota = new Note(a.getShort(0), a.getString(1));
+				nota = new Note(a.getString(1));
 				list.add(nota);
 			} while (a.moveToNext());
 		}
@@ -135,5 +176,13 @@ public class SelectItems extends Activity {
 
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
+	}
+
+	public String getLastQuery() {
+		return lastQuery;
+	}
+
+	public void setLastQuery(String lastQuery) {
+		this.lastQuery = lastQuery;
 	}
 }
