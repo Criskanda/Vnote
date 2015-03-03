@@ -16,6 +16,7 @@
     <string name="save">Save</string>
     <string name="speach">Speech</string>
     <string name="listen">Listen</string>
-
+    <string name="send">Send</string>
+    
 
 </resources>
