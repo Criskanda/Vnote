@@ -11,9 +11,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ public class MainActivity extends Activity {
 	TextView tvNotes;
 	Conexion con;
 	private String lastQuery = "";
+	private AudioManager audio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
+		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
@@ -212,4 +217,24 @@ public class MainActivity extends Activity {
 	public void setLastQuery(String lastQuery) {
 		this.lastQuery = lastQuery;
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		switch (keyCode) {
+		// Para controlar el volumen
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			return true;
+		}
+
+	}
+	
 }

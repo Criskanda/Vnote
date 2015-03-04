@@ -3,10 +3,13 @@ package reboot.vnote;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -20,11 +23,15 @@ public class NoteActivity extends Activity {
 	Note noteOpen;
 	Conexion con;
 	SQLiteDatabase db;
+	private AudioManager audio;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
+		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
@@ -184,6 +191,25 @@ public class NoteActivity extends Activity {
 		boolean exist = cursor.moveToFirst();
 		cursor.close();
 		return exist;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		switch (keyCode) {
+		// Para controlar el volumen
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			return true;
+		}
+
 	}
 
 }

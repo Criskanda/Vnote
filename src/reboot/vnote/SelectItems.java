@@ -11,19 +11,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -38,6 +37,7 @@ public class SelectItems extends Activity {
 	private String lastQuery = "";
 	private SparseBooleanArray SelectedItems;
 	private String[] ArraySelectedItems;
+	private AudioManager audio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class SelectItems extends Activity {
 		setContentView(R.layout.activity_selectitems);
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
+		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
@@ -234,8 +236,26 @@ public class SelectItems extends Activity {
 		this.lastQuery = lastQuery;
 	}
 
-	
 	public String getLastQuery() {
 		return lastQuery;
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		switch (keyCode) {
+		// Para controlar el volumen
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			return true;
+		}
+
 	}
 }
