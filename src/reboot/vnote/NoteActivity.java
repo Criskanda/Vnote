@@ -25,18 +25,16 @@ public class NoteActivity extends Activity {
 	SQLiteDatabase db;
 	private AudioManager audio;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_note);
 		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-		
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		ETtittle = (EditText) findViewById(R.id.et_title);
 		ETcontent = (EditText) findViewById(R.id.et_content);
 		Intent thisIntent = getIntent();
@@ -164,6 +162,10 @@ public class NoteActivity extends Activity {
 
 	}
 
+	/**
+	 * Insert the note in the ddbb
+	 * @return true if the note is insert successfully
+	 */
 	private boolean InsertNote() {
 		String title = ETtittle.getText().toString().trim();
 		title = title.substring(0, 1).toUpperCase() + title.substring(1);
@@ -185,6 +187,12 @@ public class NoteActivity extends Activity {
 
 	}
 
+	/**
+	 * 
+	 * @param title
+	 *            for check in ddbb
+	 * @return true if a note with that title exists
+	 */
 	private boolean titleExist(String title) {
 		Cursor cursor = db.rawQuery("SELECT 1 FROM notes WHERE title=?",
 				new String[] { title });
@@ -192,7 +200,10 @@ public class NoteActivity extends Activity {
 		cursor.close();
 		return exist;
 	}
-	
+
+	/**
+	 * Keylistener for up and down audio media
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
