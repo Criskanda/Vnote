@@ -40,13 +40,15 @@ public class MainActivity extends Activity {
 	SQLiteDatabase db;
 	TextView tvNotes;
 	Conexion con;
-	private String lastQuery = "";
+	private String lastQuery;
+
 	private AudioManager audio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
 		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -57,6 +59,7 @@ public class MainActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
+																	// query
 		FillListView();
 
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
@@ -78,6 +81,9 @@ public class MainActivity extends Activity {
 		});
 	}
 
+	/**
+	 * MenuOptions and search
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -110,6 +116,9 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Listener for items of menu
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -127,6 +136,9 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Listener of the context menu items
+	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item
@@ -152,6 +164,12 @@ public class MainActivity extends Activity {
 		FillListView();
 	}
 
+	/**
+	 * This method show a dialog and ask for confirmation for delete a note
+	 * 
+	 * @param position
+	 *            for search in the list
+	 */
 	private void EraseOneNote(int position) {
 		final Note note = list.get(position);
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -171,17 +189,27 @@ public class MainActivity extends Activity {
 		alert.show();
 	}
 
+	/**
+	 * Start the activity to NoteActivity class
+	 */
 	private void metodoAdd() {
 		Intent newSerie = new Intent(MainActivity.this, NoteActivity.class);
 		startActivity(newSerie);
 	}
 
+	/**
+	 * Start the activity to NoteActivity class and put in the intent the title
+	 * of the note
+	 */
 	private void OpenNote(Note note) {
 		Intent i = new Intent(MainActivity.this, NoteActivity.class);
 		i.putExtra("title", note.getTitle());
 		startActivity(i);
 	}
 
+	/**
+	 * Fill the listview
+	 */
 	private void FillListView() {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
@@ -200,6 +228,9 @@ public class MainActivity extends Activity {
 		lvNotes.setAdapter(adapt);
 	}
 
+	/**
+	 * Start the activity to SelectItems class
+	 */
 	private void SelectItemsActivity() {
 		Intent newSerie = new Intent(MainActivity.this, SelectItems.class);
 		newSerie.putExtra("lastQuery", getLastQuery());
@@ -210,14 +241,9 @@ public class MainActivity extends Activity {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 
-	public String getLastQuery() {
-		return lastQuery;
-	}
-
-	public void setLastQuery(String lastQuery) {
-		this.lastQuery = lastQuery;
-	}
-	
+	/**
+	 *Keylistener for up and down audio media  
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -234,7 +260,21 @@ public class MainActivity extends Activity {
 		default:
 			return true;
 		}
-
 	}
-	
+
+	/**
+	 * @return the lastQuery
+	 */
+	public String getLastQuery() {
+		return lastQuery;
+	}
+
+	/**
+	 * @param lastQuery
+	 *            the lastQuery to set
+	 */
+	public void setLastQuery(String lastQuery) {
+		this.lastQuery = lastQuery;
+	}
+
 }
