@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
 		FillListView();
 
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
@@ -86,20 +86,13 @@ public class MainActivity extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				if (query.trim().equals("")) {
-					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
-				} else {
-					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
-							+ query + "%'");
-				}
-				FillListView();
 				return true;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				if (newText.trim().equals("")) {
-					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
 				} else {
 					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
 							+ newText + "%'");
@@ -192,7 +185,7 @@ public class MainActivity extends Activity {
 		list.clear();
 		if (a.moveToFirst()) {
 			do {
-				nota = new Note(a.getString(1));
+				nota = new Note(a.getString(0));
 				list.add(nota);
 			} while (a.moveToNext());
 		}

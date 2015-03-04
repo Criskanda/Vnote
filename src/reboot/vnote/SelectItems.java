@@ -15,11 +15,15 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -32,7 +36,8 @@ public class SelectItems extends Activity {
 	TextView tvNotes;
 	Conexion con;
 	private String lastQuery = "";
-
+	private SparseBooleanArray SelectedItems;
+	private String[] ArraySelectedItems;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +49,16 @@ public class SelectItems extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		Intent thisIntent = getIntent();
 		setLastQuery(thisIntent.getExtras().getString("lastQuery"));
 		FillListView();
+		saveSelectedItems();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.select, menu);
 		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
 		SearchView search = (SearchView) menu.findItem(R.id.search)
@@ -63,20 +69,14 @@ public class SelectItems extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				if (query.trim().equals("")) {
-					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
-				} else {
-					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
-							+ query + "%'");
-				}
-				FillListView();
 				return true;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
+				saveSelectedItems();
 				if (newText.trim().equals("")) {
-					setLastQuery("SELECT id, title FROM notes ORDER BY date DESC"); // default
+					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
 				} else {
 					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
 							+ newText + "%'");
@@ -84,7 +84,6 @@ public class SelectItems extends Activity {
 				FillListView();
 				return false;
 			}
-
 		});
 		return true;
 	}
@@ -96,9 +95,10 @@ public class SelectItems extends Activity {
 			this.finish();
 			return true;
 		case R.id.search:
-			// metodoSearch()
+			saveSelectedItems();
 			return true;
 		case R.id.delete:
+			saveSelectedItems();
 			EraseNote();
 			return true;
 		default:
@@ -106,17 +106,42 @@ public class SelectItems extends Activity {
 		}
 	}
 
-	private String getSelectedItems() {
+	private String getSelectedItemsString() {
 		String auxstr = "";
 		int len = lvNotes.getCount();
-		final SparseBooleanArray checked = lvNotes.getCheckedItemPositions();
+		SparseBooleanArray check = getSelectedItems();
 		for (int i = 0; i < len; i++) {
-			if (checked.get(i)) {
+			if (check.get(i)) {
 				Note item = list.get(i);
 				auxstr += item.getTitle() + "\n";
 			}
 		}
 		return auxstr;
+	}
+
+	private void RecheckItems() {
+		String[] titleItems = getArraySelectedItems();
+		int len = lvNotes.getCount();
+		for (int i = 0; i < len; i++) {
+			Note item = list.get(i);
+			if (item.getTitle().equals(titleItems[i])) {
+				lvNotes.setItemChecked(i, true);
+			}
+		}
+	}
+
+	private String[] setSelectedItemsArray() {
+		String[] auxstr = {};
+		int len = lvNotes.getCount();
+		SparseBooleanArray check = getSelectedItems();
+		for (int i = 0; i < len; i++) {
+			if (check.get(i)) {
+				Note item = list.get(i);
+				auxstr[i] = item.getTitle();
+			}
+		}
+		return auxstr;
+
 	}
 
 	private void FillListView() {
@@ -127,7 +152,7 @@ public class SelectItems extends Activity {
 		list.clear();
 		if (a.moveToFirst()) {
 			do {
-				nota = new Note(a.getString(1));
+				nota = new Note(a.getString(0));
 				list.add(nota);
 			} while (a.moveToNext());
 		}
@@ -138,10 +163,24 @@ public class SelectItems extends Activity {
 
 		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
+
+		if (getSelectedItems() == null || getSelectedItems().size() == 0) {
+			Toast.makeText(this, "ninguno seleccionado", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			RecheckItems();
+		}
+	}
+
+	private void saveSelectedItems() {
+		setSelectedItems();
+		if (!(getSelectedItems() == null || getSelectedItems().size() == 0)) {
+			setArraySelectedItems();
+		}
 	}
 
 	private void EraseNote() {
-		String listItemsSelected = getSelectedItems();
+		String listItemsSelected = getSelectedItemsString();
 		if (!listItemsSelected.equals("")) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 			alert.setTitle("Do you want to DELETE the following notes?");
@@ -151,7 +190,6 @@ public class SelectItems extends Activity {
 
 			alert.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
-
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							int len = lvNotes.getCount();
@@ -166,10 +204,8 @@ public class SelectItems extends Activity {
 							FillListView();
 						}
 					});
-
 			alert.setNegativeButton("No", null);
 			alert.show();
-
 		}
 
 	}
@@ -178,11 +214,28 @@ public class SelectItems extends Activity {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 
-	public String getLastQuery() {
-		return lastQuery;
+	public SparseBooleanArray getSelectedItems() {
+		return SelectedItems;
+	}
+
+	public void setSelectedItems() {
+		SelectedItems = lvNotes.getCheckedItemPositions();
+	}
+
+	public String[] getArraySelectedItems() {
+		return ArraySelectedItems;
+	}
+
+	public void setArraySelectedItems() {
+		ArraySelectedItems = setSelectedItemsArray();
 	}
 
 	public void setLastQuery(String lastQuery) {
 		this.lastQuery = lastQuery;
+	}
+
+	
+	public String getLastQuery() {
+		return lastQuery;
 	}
 }
