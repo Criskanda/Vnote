@@ -58,6 +58,7 @@ public class SelectItems extends Activity {
 		saveSelectedItems();
 	}
 
+	/** create menu and set the searchmethod**/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.select, menu);
@@ -90,6 +91,7 @@ public class SelectItems extends Activity {
 		return true;
 	}
 
+	/**Listener items menu**/
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -122,7 +124,7 @@ public class SelectItems extends Activity {
 	}
 
 	private void RecheckItems() {
-		String[] titleItems = getArraySelectedItems();
+		String[] titleItems = setSelectedItemsArray();
 		int len = lvNotes.getCount();
 		for (int i = 0; i < len; i++) {
 			Note item = list.get(i);
@@ -132,6 +134,7 @@ public class SelectItems extends Activity {
 		}
 	}
 
+	/**@return array of TITLE of selected items **/
 	private String[] setSelectedItemsArray() {
 		String[] auxstr = {};
 		int len = lvNotes.getCount();
@@ -143,35 +146,6 @@ public class SelectItems extends Activity {
 			}
 		}
 		return auxstr;
-
-	}
-
-	private void FillListView() {
-		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
-		db = con.getWritableDatabase();
-		TEST_INSERT();
-		Cursor a = db.rawQuery(getLastQuery(), null);
-		list.clear();
-		if (a.moveToFirst()) {
-			do {
-				nota = new Note(a.getString(0));
-				list.add(nota);
-			} while (a.moveToNext());
-		}
-
-		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
-				getApplicationContext(),
-				android.R.layout.simple_list_item_checked, list);
-
-		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		lvNotes.setAdapter(adapt);
-
-		if (getSelectedItems() == null || getSelectedItems().size() == 0) {
-			Toast.makeText(this, "ninguno seleccionado", Toast.LENGTH_SHORT)
-					.show();
-		} else {
-			RecheckItems();
-		}
 	}
 
 	private void saveSelectedItems() {
@@ -181,6 +155,7 @@ public class SelectItems extends Activity {
 		}
 	}
 
+	/** Show dialog and ask for yes for a delete **/
 	private void EraseNote() {
 		String listItemsSelected = getSelectedItemsString();
 		if (!listItemsSelected.equals("")) {
@@ -212,10 +187,64 @@ public class SelectItems extends Activity {
 
 	}
 
+	/** Fill the listView with the lastQuery **/
+	private void FillListView() {
+		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
+		db = con.getWritableDatabase();
+		TEST_INSERT();
+		Cursor a = db.rawQuery(getLastQuery(), null);
+		list.clear();
+		if (a.moveToFirst()) {
+			do {
+				nota = new Note(a.getString(0));
+				list.add(nota);
+			} while (a.moveToNext());
+		}
+
+		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
+				getApplicationContext(),
+				android.R.layout.simple_list_item_checked, list);
+
+		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lvNotes.setAdapter(adapt);
+
+		/**
+		 * TODO set the RECHECK ITEMS
+		 * **/
+		// if (getSelectedItems() == null || getSelectedItems().size() == 0) {
+		// Toast.makeText(this, "ninguno seleccionado", Toast.LENGTH_SHORT)
+		// .show();
+		// } else {
+		// RecheckItems();
+		// }
+	}
+
+	/** NOTE TEST **/
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 
+	/** KeyListerner for media volume **/
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		switch (keyCode) {
+		// Para controlar el volumen
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+			return true;
+		default:
+			return true;
+		}
+
+	}
+
+	/** GETTERS AND SETTERS **/
 	public SparseBooleanArray getSelectedItems() {
 		return SelectedItems;
 	}
@@ -240,22 +269,4 @@ public class SelectItems extends Activity {
 		return lastQuery;
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-		switch (keyCode) {
-		// Para controlar el volumen
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-			return true;
-		default:
-			return true;
-		}
-
-	}
 }
