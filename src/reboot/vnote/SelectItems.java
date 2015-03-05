@@ -25,7 +25,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
-import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -57,11 +56,15 @@ public class SelectItems extends Activity {
 
 		Intent thisIntent = getIntent();
 		setLastQuery(thisIntent.getExtras().getString("lastQuery"));
+		
 		FillListView();
-		saveSelectedItems();
+		setSelectedItems();
+		if (getSelectedItems().size()>0) {
+			setArraySelectedItems();
+		}
 	}
 
-	/** create menu and set the searchmethod**/
+	/** create menu and set the searchmethod **/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.select, menu);
@@ -80,21 +83,27 @@ public class SelectItems extends Activity {
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				saveSelectedItems();
 				if (newText.trim().equals("")) {
 					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
 				} else {
 					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
 							+ newText + "%'");
 				}
+				if (getSelectedItems() != null) {
+					setArraySelectedItems();
+				}
 				FillListView();
+				if (getArraySelectedItems().length > 0) {
+					RecheckItems();
+				}
+
 				return false;
 			}
 		});
 		return true;
 	}
 
-	/**Listener items menu**/
+	/** Listener items menu **/
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -102,10 +111,11 @@ public class SelectItems extends Activity {
 			this.finish();
 			return true;
 		case R.id.search:
-			saveSelectedItems();
+			setSelectedItems();
+			setArraySelectedItems();
 			return true;
 		case R.id.delete:
-			saveSelectedItems();
+			setArraySelectedItems();
 			EraseNote();
 			return true;
 		default:
@@ -127,9 +137,8 @@ public class SelectItems extends Activity {
 	}
 
 	private void RecheckItems() {
-		String[] titleItems = setSelectedItemsArray();
-		int len = lvNotes.getCount();
-		for (int i = 0; i < len; i++) {
+		String[] titleItems = getArraySelectedItems();
+		for (int i = 0; i < titleItems.length; i++) {
 			Note item = list.get(i);
 			if (item.getTitle().equals(titleItems[i])) {
 				lvNotes.setItemChecked(i, true);
@@ -137,12 +146,11 @@ public class SelectItems extends Activity {
 		}
 	}
 
-	/**@return Strings array of TITLE of selected items **/
+	/** @return Strings array of TITLE of selected items **/
 	private String[] setSelectedItemsArray() {
-		String[] auxstr = {};
-		int len = lvNotes.getCount();
 		SparseBooleanArray check = getSelectedItems();
-		for (int i = 0; i < len; i++) {
+		String[] auxstr = new String[check.size()];
+		for (int i = 0; i <= check.size(); i++) {
 			if (check.get(i)) {
 				Note item = list.get(i);
 				auxstr[i] = item.getTitle();
@@ -151,20 +159,20 @@ public class SelectItems extends Activity {
 		return auxstr;
 	}
 
-	private void saveSelectedItems() {
-		setSelectedItems();
-		if (!(getSelectedItems() == null || getSelectedItems().size() == 0)) {
-			setArraySelectedItems();
+	private boolean IsAnyItemsSelected() {
+		SparseBooleanArray arrayBools = getSelectedItems();
+		int n = arrayBools.size();
+		boolean AnySelected = false;
+		for (int i = 0; i < n; i++) {
+			if (arrayBools.get(i)) {
+				return true;
+			}
 		}
+		return AnySelected;
 	}
 
-	private boolean IsAnyItemsSelected(){
-		
-		return true;
-	}
-	
-	/** TOTALLY WORKS**/ 
-	
+	/** TOTALLY WORKS **/
+
 	/** Show dialog and ask for yes for a delete **/
 	private void EraseNote() {
 		String listItemsSelected = getSelectedItemsString();
@@ -217,16 +225,15 @@ public class SelectItems extends Activity {
 
 		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
+		lvNotes.setOnItemClickListener(new OnItemClickListener() {
 
-		/**
-		 * TODO set the RECHECK ITEMS
-		 * **/
-		// if (getSelectedItems() == null || getSelectedItems().size() == 0) {
-		// Toast.makeText(this, "ninguno seleccionado", Toast.LENGTH_SHORT)
-		// .show();
-		// } else {
-		// RecheckItems();
-		// }
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				setSelectedItems();
+				setArraySelectedItems();
+			}
+		});
 	}
 
 	/** NOTE TEST **/
