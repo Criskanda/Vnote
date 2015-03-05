@@ -17,6 +17,9 @@ import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -134,7 +137,7 @@ public class SelectItems extends Activity {
 		}
 	}
 
-	/**@return array of TITLE of selected items **/
+	/**@return Strings array of TITLE of selected items **/
 	private String[] setSelectedItemsArray() {
 		String[] auxstr = {};
 		int len = lvNotes.getCount();
@@ -155,6 +158,13 @@ public class SelectItems extends Activity {
 		}
 	}
 
+	private boolean IsAnyItemsSelected(){
+		
+		return true;
+	}
+	
+	/** TOTALLY WORKS**/ 
+	
 	/** Show dialog and ask for yes for a delete **/
 	private void EraseNote() {
 		String listItemsSelected = getSelectedItemsString();
