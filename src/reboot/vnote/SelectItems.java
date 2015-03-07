@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -140,6 +141,8 @@ public class SelectItems extends Activity {
 		String[] titleItems = getArraySelectedItems();
 		for (int i = 0; i < titleItems.length; i++) {
 			Note item = list.get(i);
+			String a = item.getTitle();
+			String b = titleItems[i];
 			if (item.getTitle().equals(titleItems[i])) {
 				lvNotes.setItemChecked(i, true);
 			}
@@ -147,15 +150,21 @@ public class SelectItems extends Activity {
 	}
 
 	/** @return Strings array of TITLE of selected items **/
+	@SuppressWarnings("unused")
 	private String[] setSelectedItemsArray() {
 		SparseBooleanArray check = getSelectedItems();
 		String[] auxstr = new String[check.size()];
-		for (int i = 0; i <= check.size(); i++) {
+		for (int i = 0; i == check.size(); i++) {
 			if (check.get(i)) {
 				Note item = list.get(i);
+				String a = item.getTitle();
 				auxstr[i] = item.getTitle();
-			}
+			}			
 		}
+		if (auxstr == null) {
+			auxstr[0]="";
+		}
+		
 		return auxstr;
 	}
 
@@ -225,15 +234,6 @@ public class SelectItems extends Activity {
 
 		lvNotes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lvNotes.setAdapter(adapt);
-		lvNotes.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				setSelectedItems();
-				setArraySelectedItems();
-			}
-		});
 	}
 
 	/** NOTE TEST **/
@@ -268,6 +268,7 @@ public class SelectItems extends Activity {
 
 	public void setSelectedItems() {
 		SelectedItems = lvNotes.getCheckedItemPositions();
+		System.out.println("PRUEBA");
 	}
 
 	public String[] getArraySelectedItems() {
