@@ -97,6 +97,14 @@ public class MainActivity extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				if (query.trim().equals("")) {
+					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
+					SelectItemsActivity();
+				} else {
+					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
+							+ query + "%'");
+					SelectItemsActivity();
+				}
 				return true;
 			}
 

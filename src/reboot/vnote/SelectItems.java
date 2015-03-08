@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,15 +16,9 @@ import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
-import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
@@ -39,7 +32,6 @@ public class SelectItems extends Activity {
 	Conexion con;
 	private String lastQuery = "";
 	private SparseBooleanArray SelectedItems;
-	private String[] ArraySelectedItems;
 	private AudioManager audio;
 
 	@Override
@@ -57,50 +49,16 @@ public class SelectItems extends Activity {
 
 		Intent thisIntent = getIntent();
 		setLastQuery(thisIntent.getExtras().getString("lastQuery"));
-		
+
 		FillListView();
 		setSelectedItems();
-		if (getSelectedItems().size()>0) {
-			setArraySelectedItems();
-		}
+	
 	}
 
 	/** create menu and set the searchmethod **/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.select, menu);
-		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-		SearchView search = (SearchView) menu.findItem(R.id.search)
-				.getActionView();
-
-		search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-		search.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if (newText.trim().equals("")) {
-					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
-				} else {
-					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
-							+ newText + "%'");
-				}
-				if (getSelectedItems() != null) {
-					setArraySelectedItems();
-				}
-				FillListView();
-				if (getArraySelectedItems().length > 0) {
-					RecheckItems();
-				}
-
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -111,76 +69,13 @@ public class SelectItems extends Activity {
 		case android.R.id.home:
 			this.finish();
 			return true;
-		case R.id.search:
-			setSelectedItems();
-			setArraySelectedItems();
-			return true;
 		case R.id.delete:
-			setArraySelectedItems();
 			EraseNote();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	private String getSelectedItemsString() {
-		String auxstr = "";
-		int len = lvNotes.getCount();
-		SparseBooleanArray check = getSelectedItems();
-		for (int i = 0; i < len; i++) {
-			if (check.get(i)) {
-				Note item = list.get(i);
-				auxstr += item.getTitle() + "\n";
-			}
-		}
-		return auxstr;
-	}
-
-	private void RecheckItems() {
-		String[] titleItems = getArraySelectedItems();
-		for (int i = 0; i < titleItems.length; i++) {
-			Note item = list.get(i);
-			String a = item.getTitle();
-			String b = titleItems[i];
-			if (item.getTitle().equals(titleItems[i])) {
-				lvNotes.setItemChecked(i, true);
-			}
-		}
-	}
-
-	/** @return Strings array of TITLE of selected items **/
-	@SuppressWarnings("unused")
-	private String[] setSelectedItemsArray() {
-		SparseBooleanArray check = getSelectedItems();
-		String[] auxstr = new String[check.size()];
-		for (int i = 0; i == check.size(); i++) {
-			if (check.get(i)) {
-				Note item = list.get(i);
-				String a = item.getTitle();
-				auxstr[i] = item.getTitle();
-			}			
-		}
-		if (auxstr == null) {
-			auxstr[0]="";
-		}
-		
-		return auxstr;
-	}
-
-	private boolean IsAnyItemsSelected() {
-		SparseBooleanArray arrayBools = getSelectedItems();
-		int n = arrayBools.size();
-		boolean AnySelected = false;
-		for (int i = 0; i < n; i++) {
-			if (arrayBools.get(i)) {
-				return true;
-			}
-		}
-		return AnySelected;
-	}
-
-	/** TOTALLY WORKS **/
 
 	/** Show dialog and ask for yes for a delete **/
 	private void EraseNote() {
@@ -211,7 +106,6 @@ public class SelectItems extends Activity {
 			alert.setNegativeButton("No", null);
 			alert.show();
 		}
-
 	}
 
 	/** Fill the listView with the lastQuery **/
@@ -236,6 +130,19 @@ public class SelectItems extends Activity {
 		lvNotes.setAdapter(adapt);
 	}
 
+	private String getSelectedItemsString() {
+		String auxstr = "";
+		int len = lvNotes.getCount();
+		SparseBooleanArray check = getSelectedItems();
+		for (int i = 0; i < len; i++) {
+			if (check.get(i)) {
+				Note item = list.get(i);
+				auxstr += item.getTitle() + "\n";
+			}
+		}
+		return auxstr;
+	}
+	
 	/** NOTE TEST **/
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
@@ -268,15 +175,6 @@ public class SelectItems extends Activity {
 
 	public void setSelectedItems() {
 		SelectedItems = lvNotes.getCheckedItemPositions();
-		System.out.println("PRUEBA");
-	}
-
-	public String[] getArraySelectedItems() {
-		return ArraySelectedItems;
-	}
-
-	public void setArraySelectedItems() {
-		ArraySelectedItems = setSelectedItemsArray();
 	}
 
 	public void setLastQuery(String lastQuery) {
