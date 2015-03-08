@@ -1,5 +1,10 @@
 package reboot.vnote;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -11,11 +16,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,8 +33,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
+
+
 
 public class MainActivity extends Activity {
 
@@ -42,8 +49,6 @@ public class MainActivity extends Activity {
 	Conexion con;
 	private String lastQuery;
 
-	private AudioManager audio;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,15 +56,13 @@ public class MainActivity extends Activity {
 
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
-		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
-																	// query
+		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default query
 		FillListView();
 
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
@@ -139,6 +142,16 @@ public class MainActivity extends Activity {
 		case R.id.add:
 			metodoAdd();
 			return true;
+		case R.id.action_import:
+			try {
+				importFromLastVersion();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return true;
+		case R.id.action_settings:
+			
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -170,6 +183,43 @@ public class MainActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		FillListView();
+	}
+
+	/** Import from the last **/
+	private void importFromLastVersion() throws IOException {
+		String sdCardRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
+		File dir = new File(sdCardRoot+"/Notas de vnote");
+		String[] noteTitles=null;
+		try {
+			noteTitles= dir.list();
+		} catch (Exception e) {
+			return;
+		}
+		
+			Toast.makeText(this, noteTitles.length+"",
+					Toast.LENGTH_SHORT).show();
+			if (noteTitles.length > 0 ) {
+				for (int i = 0; i < noteTitles.length; i++) {
+					File f2 = new File(dir, noteTitles[i]);
+					BufferedReader fin = new BufferedReader(
+							new InputStreamReader(new FileInputStream(f2)));
+					String content = "";
+					String line;
+
+					while ((line = fin.readLine()) != null) {
+						content += line + "\n";
+					}
+					fin.close();
+					f2.delete();
+					con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
+					db = con.getWritableDatabase();
+					con.InsertNote(db, noteTitles[i].replace(".txt", ""), content, con.getToday());
+				}
+			} else {
+				Toast.makeText(this, "No hay archivos en la carpeta",
+						Toast.LENGTH_SHORT).show();
+			}
+		
 	}
 
 	/**
@@ -249,26 +299,6 @@ public class MainActivity extends Activity {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
 
-	/**
-	 *Keylistener for up and down audio media  
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-		switch (keyCode) {
-		// Para controlar el volumen
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-			return true;
-		default:
-			return true;
-		}
-	}
 
 	/**
 	 * @return the lastQuery
