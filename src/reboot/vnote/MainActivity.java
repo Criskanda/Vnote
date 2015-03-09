@@ -43,10 +43,9 @@ public class MainActivity extends Activity {
 
 	ListView lvNotes;
 	ArrayList<Note> list = new ArrayList<Note>();
-	Note nota;
-	SQLiteDatabase db;
 	TextView tvNotes;
 	Conexion con;
+	SQLiteDatabase db;
 	private String lastQuery;
 
 	@Override
@@ -56,7 +55,8 @@ public class MainActivity extends Activity {
 
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
-
+		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
+		db = con.getWritableDatabase();
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
@@ -166,7 +166,7 @@ public class MainActivity extends Activity {
 				.getMenuInfo();
 		switch (item.getItemId()) {
 		case R.id.send:
-			// method listen
+			SendOneNote(menuInfo.position);
 			return true;
 		case R.id.delete:
 			EraseOneNote(menuInfo.position);
@@ -178,6 +178,8 @@ public class MainActivity extends Activity {
 			return super.onContextItemSelected(item);
 		}
 	}
+
+	
 
 	@Override
 	public void onResume() {
@@ -222,6 +224,24 @@ public class MainActivity extends Activity {
 		
 	}
 
+	
+	private void SendOneNote(int position) {
+		Cursor a = db.rawQuery("SELECT title,content FROM notes WHERE title ='"+list.get(position).getTitle()+"'", null);
+		list.clear();
+		Note note = null;
+		if (a.moveToFirst()) {
+			do {
+				note = new Note(a.getString(0),a.getString(1));
+				list.add(note);
+			} while (a.moveToNext());
+		}
+		
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND); 
+	    sharingIntent.setType("text/plain");
+	    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, note.getTitle());
+	    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, note.getContent());
+	startActivity(Intent.createChooser(sharingIntent, "Share via"));		
+	}
 	/**
 	 * This method show a dialog and ask for confirmation for delete a note
 	 * 
@@ -247,6 +267,7 @@ public class MainActivity extends Activity {
 		alert.show();
 	}
 
+	
 	/**
 	 * Start the activity to NoteActivity class
 	 */
@@ -269,15 +290,13 @@ public class MainActivity extends Activity {
 	 * Fill the listview
 	 */
 	private void FillListView() {
-		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
-		db = con.getWritableDatabase();
 		TEST_INSERT();
 		Cursor a = db.rawQuery(getLastQuery(), null);
 		list.clear();
 		if (a.moveToFirst()) {
 			do {
-				nota = new Note(a.getString(0));
-				list.add(nota);
+				Note note = new Note(a.getString(0));
+				list.add(note);
 			} while (a.moveToNext());
 		}
 		ArrayAdapter<Note> adapt = new ArrayAdapter<Note>(
