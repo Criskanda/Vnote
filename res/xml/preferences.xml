@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/preference_order_notes"
+        android:entryValues="@array/preference_order_notes_val"
+        android:key="downloadType"
+        android:title="@string/order" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/preference_lenguage"
+        android:entryValues="@array/preference_lenguage_val"
+        android:title="@string/lenguage" />
+
+</PreferenceScreen>

@@ -18,6 +18,7 @@
     <string name="listen">Listen</string>
     <string name="send">Send</string>
     <string name="importlast">Import from last version</string>
-
+	<string name="lenguage">Language</string>
+	<string name="order">Order</string>
     
 </resources>

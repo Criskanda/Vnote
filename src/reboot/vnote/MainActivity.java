@@ -146,7 +146,7 @@ public class MainActivity extends Activity {
 			}
 			return true;
 		case R.id.action_settings:
-			
+			startActivity(new Intent(this, AppPreferences.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

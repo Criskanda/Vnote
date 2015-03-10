@@ -72,6 +72,9 @@ public class SelectItems extends Activity {
 		case R.id.delete:
 			EraseNote();
 			return true;
+		case R.id.action_settings:
+			startActivity(new Intent(this, AppPreferences.class));
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
