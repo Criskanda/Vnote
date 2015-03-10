@@ -6,18 +6,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -58,7 +60,11 @@ public class MainActivity extends Activity {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 
-		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default query
+		SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String order = SP.getString("pref_order", "2").toLowerCase(Locale.US);
+		
+		
+		setLastQuery("SELECT title FROM notes ORDER BY "+order+" DESC"); // default query
 		FillListView();
 
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {

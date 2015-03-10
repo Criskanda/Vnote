@@ -18,7 +18,9 @@
     <string name="listen">Listen</string>
     <string name="send">Send</string>
     <string name="importlast">Import from last version</string>
-	<string name="lenguage">Language</string>
-	<string name="order">Order</string>
-    
+    <string name="lenguage">Language</string>
+    <string name="lenguage_sumary">Select the application language</string>
+    <string name="order">Order</string>
+    <string name="order_sumary">Order by &#8230;</string>
+
 </resources>

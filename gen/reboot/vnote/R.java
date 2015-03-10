@@ -74,11 +74,13 @@ public final class R {
         public static final int edit=0x7f080005;
         public static final int importlast=0x7f080010;
         public static final int lenguage=0x7f080011;
+        public static final int lenguage_sumary=0x7f080012;
         public static final int listen=0x7f08000e;
         public static final int note_content=0x7f08000b;
         public static final int note_title=0x7f080009;
         public static final int notes=0x7f080007;
-        public static final int order=0x7f080012;
+        public static final int order=0x7f080013;
+        public static final int order_sumary=0x7f080014;
         public static final int save=0x7f08000c;
         public static final int search=0x7f080002;
         public static final int send=0x7f08000f;

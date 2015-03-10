@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="preference_order_notes">
-        <item>By Title</item>
-        <item>By Date</item>
+        <item>Title</item>
+        <item>Date</item>
     </string-array>
     <string-array name="preference_order_notes_val">
         <item>1</item>

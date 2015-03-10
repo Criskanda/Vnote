@@ -5,12 +5,15 @@
         android:defaultValue="1"
         android:entries="@array/preference_order_notes"
         android:entryValues="@array/preference_order_notes_val"
-        android:key="downloadType"
+        android:key="pref_order"
+        android:summary="@string/order_sumary"
         android:title="@string/order" />
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/preference_lenguage"
         android:entryValues="@array/preference_lenguage_val"
+        android:key="pref_lenguage"
+        android:summary="@string/lenguage_sumary"
         android:title="@string/lenguage" />
 
 </PreferenceScreen>
