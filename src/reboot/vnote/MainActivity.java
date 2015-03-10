@@ -57,10 +57,6 @@ public class MainActivity extends Activity {
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
-		// ActionBar and back button.
-		ActionBar actionBar = getActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default query
 		FillListView();
