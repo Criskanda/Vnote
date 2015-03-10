@@ -188,10 +188,10 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**On resume refresh the listview */
 	@Override
 	public void onResume() {
 		super.onResume();
-		setDefaultQuery();
 		FillListView();
 	}
 

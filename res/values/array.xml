@@ -2,12 +2,12 @@
 <resources>
 
     <string-array name="preference_order_notes">
-        <item>Title</item>
-        <item>Date</item>
+        <item>By Title</item>
+        <item>By Date</item>
     </string-array>
     <string-array name="preference_order_notes_val">
-        <item>1</item>
-        <item>2</item>
+        <item>title</item>
+        <item>date</item>
     </string-array>
     <string-array name="preference_lenguage">
         <item>English</item>
@@ -16,10 +16,10 @@
         <item>Spanish (Castilian)</item>
     </string-array>
     <string-array name="preference_lenguage_val">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+        <item>US</item>
+        <item>FR</item>
+        <item>DE</item>
+        <item>ES</item>
     </string-array>
 
 </resources>
