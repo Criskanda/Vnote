@@ -39,8 +39,6 @@ import android.widget.Toast;
 import ddbb.Conexion;
 import ddbb.Note;
 
-
-
 public class MainActivity extends Activity {
 
 	ListView lvNotes;
@@ -49,6 +47,7 @@ public class MainActivity extends Activity {
 	Conexion con;
 	SQLiteDatabase db;
 	private String lastQuery;
+	SharedPreferences SP;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +59,7 @@ public class MainActivity extends Activity {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
 
-		SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		String order = SP.getString("pref_order", "2").toLowerCase(Locale.US);
-		
-		
-		setLastQuery("SELECT title FROM notes ORDER BY "+order+" DESC"); // default query
+		setDefaultQuery();
 		FillListView();
 
 		lvNotes.setOnItemClickListener(new OnItemClickListener() {
@@ -103,7 +98,7 @@ public class MainActivity extends Activity {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
 				if (query.trim().equals("")) {
-					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
+					setDefaultQuery();
 					SelectItemsActivity();
 				} else {
 					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
@@ -116,7 +111,7 @@ public class MainActivity extends Activity {
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				if (newText.trim().equals("")) {
-					setLastQuery("SELECT title FROM notes ORDER BY date DESC"); // default
+					setDefaultQuery();
 				} else {
 					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
 							+ newText + "%'");
@@ -127,6 +122,18 @@ public class MainActivity extends Activity {
 
 		});
 		return true;
+	}
+
+	private void setDefaultQuery() {
+		SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String order = SP.getString("pref_order", "date")
+				.toLowerCase(Locale.US);
+
+		if (order.equals("title")) {
+			setLastQuery("SELECT title FROM notes ORDER BY " + order + " "); // default
+		} else {
+			setLastQuery("SELECT title FROM notes ORDER BY " + order + " DESC"); // default
+		}
 	}
 
 	/**
@@ -181,69 +188,72 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	
-
 	@Override
 	public void onResume() {
 		super.onResume();
+		setDefaultQuery();
 		FillListView();
 	}
 
 	/** Import from the last **/
 	private void importFromLastVersion() throws IOException {
-		String sdCardRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
-		File dir = new File(sdCardRoot+"/Notas de vnote");
-		String[] noteTitles=null;
+		String sdCardRoot = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
+		File dir = new File(sdCardRoot + "/Notas de vnote");
+		String[] noteTitles = null;
 		try {
-			noteTitles= dir.list();
+			noteTitles = dir.list();
 		} catch (Exception e) {
 			return;
 		}
-		
-			Toast.makeText(this, noteTitles.length+"",
-					Toast.LENGTH_SHORT).show();
-			if (noteTitles.length > 0 ) {
-				for (int i = 0; i < noteTitles.length; i++) {
-					File f2 = new File(dir, noteTitles[i]);
-					BufferedReader fin = new BufferedReader(
-							new InputStreamReader(new FileInputStream(f2)));
-					String content = "";
-					String line;
 
-					while ((line = fin.readLine()) != null) {
-						content += line + "\n";
-					}
-					fin.close();
-					f2.delete();
-					con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
-					db = con.getWritableDatabase();
-					con.InsertNote(db, noteTitles[i].replace(".txt", ""), content, con.getToday());
+		if (noteTitles.length > 0) {
+			for (int i = 0; i < noteTitles.length; i++) {
+				File f2 = new File(dir, noteTitles[i]);
+				BufferedReader fin = new BufferedReader(new InputStreamReader(
+						new FileInputStream(f2)));
+				String content = "";
+				String line;
+
+				while ((line = fin.readLine()) != null) {
+					content += line + "\n";
 				}
-			} else {
-				Toast.makeText(this, "No hay archivos en la carpeta",
-						Toast.LENGTH_SHORT).show();
+				fin.close();
+				f2.delete();
+				con = new Conexion(getApplicationContext(), "DBNotes.db", null,
+						1);
+				db = con.getWritableDatabase();
+				con.InsertNote(db, noteTitles[i].replace(".txt", ""), content,
+						con.getToday());
 			}
-		
+		} else {
+			Toast.makeText(this, "No hay archivos en la carpeta",
+					Toast.LENGTH_SHORT).show();
+		}
+
 	}
 
-	
 	private void SendOneNote(int position) {
-		Cursor a = db.rawQuery("SELECT title,content FROM notes WHERE title ='"+list.get(position).getTitle()+"'", null);
+		Cursor a = db.rawQuery("SELECT title,content FROM notes WHERE title ='"
+				+ list.get(position).getTitle() + "'", null);
 		list.clear();
 		Note note = null;
 		if (a.moveToFirst()) {
 			do {
-				note = new Note(a.getString(0),a.getString(1));
+				note = new Note(a.getString(0), a.getString(1));
 				list.add(note);
 			} while (a.moveToNext());
 		}
-		
-		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND); 
-	    sharingIntent.setType("text/plain");
-	    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, note.getTitle());
-	    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, note.getContent());
-	startActivity(Intent.createChooser(sharingIntent, "Share via"));		
+
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				note.getTitle());
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+				note.getContent());
+		startActivity(Intent.createChooser(sharingIntent, "Share via"));
 	}
+
 	/**
 	 * This method show a dialog and ask for confirmation for delete a note
 	 * 
@@ -269,7 +279,6 @@ public class MainActivity extends Activity {
 		alert.show();
 	}
 
-	
 	/**
 	 * Start the activity to NoteActivity class
 	 */
@@ -319,7 +328,6 @@ public class MainActivity extends Activity {
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
 	}
-
 
 	/**
 	 * @return the lastQuery
