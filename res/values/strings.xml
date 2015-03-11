@@ -22,5 +22,9 @@
     <string name="lenguage_sumary">Select the application language</string>
     <string name="order">Order</string>
     <string name="order_sumary">Order by &#8230;</string>
+    <string name="files_not_found">No files found in the folder</string>
+    <string name="save_ok">Save Successfully</string>
+    <string name="note_exists">Already exist a note with that title</string>
+    <string name="empty_fields">Someone fields is empty</string>
 
 </resources>
