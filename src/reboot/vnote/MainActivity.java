@@ -248,7 +248,7 @@ public class MainActivity extends Activity {
 						con.getToday());
 			}
 		} else {
-			Toast.makeText(this, "No hay archivos en la carpeta",
+			Toast.makeText(this, R.string.files_not_found,
 					Toast.LENGTH_SHORT).show();
 		}
 
