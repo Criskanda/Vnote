@@ -95,18 +95,18 @@ public class NoteActivity extends Activity {
 		if (CheckFields()) {
 			if (noteOpen != null) {
 				if (UpdateNote()) {
-					Toast.makeText(this, "Save Successfully",
+					Toast.makeText(this, R.string.save_ok,
 							Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(this,
-							"Already exist a note With That title",
+							R.string.note_exists,
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (InsertNote()) {
 				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(this, "Already exist a note With That title",
+				Toast.makeText(this, R.string.note_exists,
 						Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -117,7 +117,7 @@ public class NoteActivity extends Activity {
 		String s2 = ETcontent.getText().toString().trim();
 
 		if (s1.length() == 0 || s2.length() == 0) {
-			Toast.makeText(this, "Someone fields is empty", Toast.LENGTH_SHORT)
+			Toast.makeText(this,R.string.empty_fields, Toast.LENGTH_SHORT)
 					.show();
 			return false;
 		} else {
@@ -180,7 +180,7 @@ public class NoteActivity extends Activity {
 				return false;
 			}
 		} else {
-			Toast.makeText(this, "Already exist a note with that title",
+			Toast.makeText(this, R.string.note_exists,
 					Toast.LENGTH_SHORT).show();
 			return false;
 		}
