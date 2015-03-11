@@ -48,7 +48,8 @@ public class MainActivity extends Activity {
 	SQLiteDatabase db;
 	private String lastQuery;
 	SharedPreferences SP;
-
+	SearchView search ;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,9 +90,8 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-		SearchView search = (SearchView) menu.findItem(R.id.search)
+		search = (SearchView) menu.findItem(R.id.search)
 				.getActionView();
-
 		search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 		search.setOnQueryTextListener(new OnQueryTextListener() {
 
@@ -101,8 +101,7 @@ public class MainActivity extends Activity {
 					setDefaultQuery();
 					SelectItemsActivity();
 				} else {
-					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
-							+ query + "%'");
+					setSearchQuery(query);
 					SelectItemsActivity();
 				}
 				return true;
@@ -113,8 +112,7 @@ public class MainActivity extends Activity {
 				if (newText.trim().equals("")) {
 					setDefaultQuery();
 				} else {
-					setLastQuery("SELECT title FROM notes WHERE title LIKE '%"
-							+ newText + "%'");
+					setSearchQuery(newText);
 				}
 				FillListView();
 				return false;
@@ -133,6 +131,20 @@ public class MainActivity extends Activity {
 			setLastQuery("SELECT title FROM notes ORDER BY " + order + " "); // default
 		} else {
 			setLastQuery("SELECT title FROM notes ORDER BY " + order + " DESC"); // default
+		}
+	}
+
+	private void setSearchQuery(String search) {
+		SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String order = SP.getString("pref_order", "date")
+				.toLowerCase(Locale.US);
+
+		if (order.equals("title")) {
+			setLastQuery("SELECT title FROM notes WHERE title LIKE '%" + search
+					+ "%' ORDER BY " + order + " "); // default
+		} else {
+			setLastQuery("SELECT title FROM notes WHERE title LIKE '%" + search
+					+ "%' ORDER BY " + order + " DESC"); // default
 		}
 	}
 
@@ -188,11 +200,20 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	/**On resume refresh the listview */
+	/** On resume refresh the listview */
 	@Override
 	public void onResume() {
 		super.onResume();
-		FillListView();
+		try {
+			if (search.getQuery() =="" || search.getQuery() ==null) {
+				setDefaultQuery();
+			}else{
+				setSearchQuery(search.getQuery().toString());
+			}
+			FillListView();
+		} catch (Exception e) {
+			FillListView();
+		}
 	}
 
 	/** Import from the last **/
