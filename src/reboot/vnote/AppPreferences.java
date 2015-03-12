@@ -29,23 +29,30 @@ public class AppPreferences extends PreferenceActivity {
 							Object newValue) {
 						SharedPreferences SP = PreferenceManager
 								.getDefaultSharedPreferences(getBaseContext());
-						changeLanguage(SP.getString("pref_lenguage", "ES")
-								.toLowerCase(Locale.US));
+						changeLanguage(SP.getString("pref_lenguage", "ES"));
 						return true;
 					}
 				});
 	}
-
 	private void changeLanguage(String lenguage) {
-		Locale myLocale = new Locale(lenguage);
+		Locale myLocale = new Locale(lenguage.toLowerCase(Locale.US),lenguage);
 		Resources res = getResources();
 		DisplayMetrics dm = res.getDisplayMetrics();
 		Configuration conf = res.getConfiguration();
 		conf.locale = myLocale;
 		res.updateConfiguration(conf, dm);
 		Intent refresh = new Intent(this, AppPreferences.class);
+		Intent thisIntent = getIntent();
+	    refresh.putExtra("PreviusActivity",thisIntent.getExtras().getParcelable("PreviusActivity"));
 		startActivity(refresh);
+		finish();
 
 	}
-
+	@Override
+    public void onBackPressed() {
+        super.onBackPressed();   
+        Intent thisIntent = getIntent();
+        Intent a = thisIntent.getExtras().getParcelable("PreviusActivity");
+		startActivity(a);
+}
 }
