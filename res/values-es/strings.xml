@@ -1,0 +1,27 @@
+<resources>
+	<string name="app_name">Vnote</string>
+	<string name="action_settings">Configuración</string>
+	<string name="search">Buscar</string>
+	<string name="add">Agregar</string>
+	<string name="delete">Borrar</string>
+	<string name="edit">Editar</string>
+	<string name="title_activity_new_note">Nueva nota</string>
+	<string name="notes">Notas</string>
+	<string name="tv_tittle"><u>Título</u></string>
+	<string name="note_title">Título de la nota</string>
+	<string name="tv_content"><u>Contenido</u></string>
+	<string name="note_content">Contenidos de la nota</string>
+	<string name="save">Guardar</string>
+	<string name="speach">Discurso</string>
+	<string name="listen">Escuchar</string>
+	<string name="send">Enviar</string>
+	<string name="importlast">Importar de la última versión</string>
+	<string name="lenguage">Idioma</string>
+	<string name="lenguage_sumary">Seleccionar el idioma de la aplicación</string>
+	<string name="order">Ordenar</string>
+	<string name="order_sumary">Ordenar por &#8230;</string>
+	<string name="files_not_found">No se encontraron archivos en la carpeta</string>
+	<string name="save_ok">Guardado Satisfactoriamente</string>
+	<string name="note_exists">Ya existe una nota con ese titulo</string>
+	<string name="empty_fields">Algunos campos están vacíos</string>
+</resources>

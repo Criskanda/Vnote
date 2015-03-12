@@ -10,11 +10,11 @@
         <item>date</item>
     </string-array>
     <string-array name="preference_lenguage">
-        <item>English</item>
-        <item>French</item>
-        <item>German</item>
-        <item>Spanish (Castilian)</item>
-        <item></item>
+         <item> Inglês </item>
+         <item> Frances </item>
+         <item> Alemão </item>
+         <item> espanhol (castelhano) </item>
+         <item> Portuges </item>
     </string-array>
     <string-array name="preference_lenguage_val">
         <item>US</item>
