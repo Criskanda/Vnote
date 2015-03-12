@@ -171,7 +171,10 @@ public class MainActivity extends Activity {
 			}
 			return true;
 		case R.id.action_settings:
-			startActivity(new Intent(this, AppPreferences.class));
+			Intent i = new Intent(this, AppPreferences.class);
+			i.putExtra("PreviusActivity", getIntent());
+			startActivity(i);
+			finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
