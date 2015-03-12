@@ -11,15 +11,19 @@
     </string-array>
     <string-array name="preference_lenguage">
         <item>English</item>
+        <!--
         <item>French</item>
         <item>German</item>
+        -->
         <item>Spanish (Castilian)</item>
-        <item></item>
+        <item>Portuguese</item>
     </string-array>
     <string-array name="preference_lenguage_val">
         <item>US</item>
+        <!--
         <item>FR</item>
         <item>DE</item>
+        -->
         <item>ES</item>
         <item>PT</item>
     </string-array>
