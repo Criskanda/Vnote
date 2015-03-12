@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -32,7 +29,6 @@ public class SelectItems extends Activity {
 	Conexion con;
 	private String lastQuery = "";
 	private SparseBooleanArray SelectedItems;
-	private AudioManager audio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,6 @@ public class SelectItems extends Activity {
 		setContentView(R.layout.activity_selectitems);
 		tvNotes = (TextView) findViewById(R.id.tv_notes);
 		lvNotes = (ListView) findViewById(R.id.lv_notes);
-		audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
 		// ActionBar and back button.
 		ActionBar actionBar = getActionBar();
@@ -73,7 +68,10 @@ public class SelectItems extends Activity {
 			EraseNote();
 			return true;
 		case R.id.action_settings:
-			startActivity(new Intent(this, AppPreferences.class));
+			Intent i = new Intent(this, AppPreferences.class);
+			i.putExtra("PreviusActivity", getIntent());
+			startActivity(i);
+			finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -149,26 +147,6 @@ public class SelectItems extends Activity {
 	/** NOTE TEST **/
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
-	}
-
-	/** KeyListerner for media volume **/
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-		switch (keyCode) {
-		// Para controlar el volumen
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-					AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-			return true;
-		default:
-			return true;
-		}
-
 	}
 
 	/** GETTERS AND SETTERS **/
