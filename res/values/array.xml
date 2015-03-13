@@ -3,20 +3,20 @@
 
     <string-array name="preference_order_notes">
         <item>By Title</item>
-        <item>By Date</item>
+        <item value="@string/by_date">@string/by_date</item>
     </string-array>
     <string-array name="preference_order_notes_val">
         <item>title</item>
         <item>date</item>
     </string-array>
     <string-array name="preference_lenguage">
-        <item>English</item>
+        <item>@string/english</item>
         <!--
         <item>French</item>
         <item>German</item>
         -->
-        <item>Spanish (Castilian)</item>
-        <item>Portuguese</item>
+        <item>@string/spanish</item>
+        <item>@string/portuguese</item>
     </string-array>
     <string-array name="preference_lenguage_val">
         <item>US</item>

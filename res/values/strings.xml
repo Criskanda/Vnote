@@ -26,5 +26,9 @@
     <string name="save_ok">Save Successfully</string>
     <string name="note_exists">Already exist a note with that title</string>
     <string name="empty_fields">Someone fields is empty</string>
-
+	<string name="by_date">By Date</string>
+	<string name="by_title">By Title</string>
+	<string name="english">English</string>
+	<string name="spanish">Spanish (Castilian)</string>
+	<string name="portuguese">Portuguese</string>
 </resources>
