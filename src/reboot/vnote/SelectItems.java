@@ -47,7 +47,7 @@ public class SelectItems extends Activity {
 
 		FillListView();
 		setSelectedItems();
-	
+
 	}
 
 	/** create menu and set the searchmethod **/
@@ -62,7 +62,10 @@ public class SelectItems extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			this.finish();
+			super.onBackPressed();
+			Intent a = new Intent(this, MainActivity.class);
+			startActivity(a);
+			finish();
 			return true;
 		case R.id.delete:
 			EraseNote();
@@ -143,14 +146,14 @@ public class SelectItems extends Activity {
 		}
 		return auxstr;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		Intent a = new Intent(this,MainActivity.class);
+		Intent a = new Intent(this, MainActivity.class);
 		startActivity(a);
 	}
-	
+
 	/** NOTE TEST **/
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());

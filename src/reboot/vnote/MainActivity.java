@@ -154,9 +154,6 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-			return true;
 		case R.id.edit:
 			SelectItemsActivity();
 			return true;
@@ -319,6 +316,7 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(MainActivity.this, NoteActivity.class);
 		i.putExtra("title", note.getTitle());
 		startActivity(i);
+		finish();
 	}
 
 	/**

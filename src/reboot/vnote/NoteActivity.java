@@ -75,7 +75,10 @@ public class NoteActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			this.finish();
+			super.onBackPressed();
+			Intent a = new Intent(this, MainActivity.class);
+			startActivity(a);
+			finish();
 			return true;
 		case R.id.save:
 			CheckTypeNoteAndSave();
@@ -94,27 +97,26 @@ public class NoteActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		Intent a = new Intent(this,MainActivity.class);
+		Intent a = new Intent(this, MainActivity.class);
 		startActivity(a);
 	}
-	
+
 	private void CheckTypeNoteAndSave() {
 		if (CheckFields()) {
 			if (noteOpen != null) {
 				if (UpdateNote()) {
-					Toast.makeText(this, R.string.save_ok,
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, R.string.save_ok, Toast.LENGTH_SHORT)
+							.show();
 				} else {
-					Toast.makeText(this,
-							R.string.note_exists,
+					Toast.makeText(this, R.string.note_exists,
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (InsertNote()) {
 				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(this, R.string.note_exists,
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.note_exists, Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
 	}
@@ -124,7 +126,7 @@ public class NoteActivity extends Activity {
 		String s2 = ETcontent.getText().toString().trim();
 
 		if (s1.length() == 0 || s2.length() == 0) {
-			Toast.makeText(this,R.string.empty_fields, Toast.LENGTH_SHORT)
+			Toast.makeText(this, R.string.empty_fields, Toast.LENGTH_SHORT)
 					.show();
 			return false;
 		} else {
@@ -171,6 +173,7 @@ public class NoteActivity extends Activity {
 
 	/**
 	 * Insert the note in the ddbb
+	 * 
 	 * @return true if the note is insert successfully
 	 */
 	private boolean InsertNote() {
@@ -187,8 +190,8 @@ public class NoteActivity extends Activity {
 				return false;
 			}
 		} else {
-			Toast.makeText(this, R.string.note_exists,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.note_exists, Toast.LENGTH_SHORT)
+					.show();
 			return false;
 		}
 
