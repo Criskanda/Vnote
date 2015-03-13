@@ -72,9 +72,12 @@ public final class R {
         public static final int action_settings=0x7f080001;
         public static final int add=0x7f080003;
         public static final int app_name=0x7f080000;
+        public static final int by_date=0x7f080019;
+        public static final int by_title=0x7f08001a;
         public static final int delete=0x7f080004;
         public static final int edit=0x7f080005;
         public static final int empty_fields=0x7f080018;
+        public static final int english=0x7f08001b;
         public static final int files_not_found=0x7f080015;
         public static final int importlast=0x7f080010;
         public static final int lenguage=0x7f080011;
@@ -86,10 +89,12 @@ public final class R {
         public static final int notes=0x7f080007;
         public static final int order=0x7f080013;
         public static final int order_sumary=0x7f080014;
+        public static final int portuguese=0x7f08001d;
         public static final int save=0x7f08000c;
         public static final int save_ok=0x7f080016;
         public static final int search=0x7f080002;
         public static final int send=0x7f08000f;
+        public static final int spanish=0x7f08001c;
         public static final int speach=0x7f08000d;
         public static final int title_activity_new_note=0x7f080006;
         public static final int tv_content=0x7f08000a;

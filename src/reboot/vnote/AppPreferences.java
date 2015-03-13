@@ -3,14 +3,12 @@ package reboot.vnote;
 import java.util.Locale;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
 public class AppPreferences extends PreferenceActivity {
@@ -21,38 +19,39 @@ public class AppPreferences extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 
-		final ListPreference prefListThemes = (ListPreference) findPreference("pref_lenguage");
+		final ListPreference prefListLenguage = (ListPreference) findPreference("pref_lenguage");
 
-		prefListThemes
+		prefListLenguage
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 					public boolean onPreferenceChange(Preference preference,
 							Object newValue) {
-						SharedPreferences SP = PreferenceManager
-								.getDefaultSharedPreferences(getBaseContext());
-						changeLanguage(SP.getString("pref_lenguage", "ES"));
+						changeLanguage(newValue.toString());
 						return true;
 					}
 				});
 	}
+
 	private void changeLanguage(String lenguage) {
-		Locale myLocale = new Locale(lenguage.toLowerCase(Locale.US),lenguage);
+		Locale newLocale = new Locale(lenguage.toLowerCase(Locale.US), lenguage);
 		Resources res = getResources();
 		DisplayMetrics dm = res.getDisplayMetrics();
 		Configuration conf = res.getConfiguration();
-		conf.locale = myLocale;
+		conf.locale = newLocale;
 		res.updateConfiguration(conf, dm);
 		Intent refresh = new Intent(this, AppPreferences.class);
 		Intent thisIntent = getIntent();
-	    refresh.putExtra("PreviusActivity",thisIntent.getExtras().getParcelable("PreviusActivity"));
+		refresh.putExtra("PreviusActivity", thisIntent.getExtras()
+				.getParcelable("PreviusActivity"));
 		startActivity(refresh);
 		finish();
 
 	}
+
 	@Override
-    public void onBackPressed() {
-        super.onBackPressed();   
-        Intent thisIntent = getIntent();
-        Intent a = thisIntent.getExtras().getParcelable("PreviusActivity");
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent thisIntent = getIntent();
+		Intent a = thisIntent.getExtras().getParcelable("PreviusActivity");
 		startActivity(a);
-}
+	}
 }
