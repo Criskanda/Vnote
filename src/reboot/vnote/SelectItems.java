@@ -152,6 +152,7 @@ public class SelectItems extends Activity {
 		super.onBackPressed();
 		Intent a = new Intent(this, MainActivity.class);
 		startActivity(a);
+		
 	}
 
 	/** NOTE TEST **/

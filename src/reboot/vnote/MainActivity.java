@@ -172,6 +172,7 @@ public class MainActivity extends Activity {
 			i.putExtra("PreviusActivity", getIntent());
 			startActivity(i);
 			finish();
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

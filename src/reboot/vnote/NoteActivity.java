@@ -79,6 +79,7 @@ public class NoteActivity extends Activity {
 			Intent a = new Intent(this, MainActivity.class);
 			startActivity(a);
 			finish();
+			
 			return true;
 		case R.id.save:
 			CheckTypeNoteAndSave();

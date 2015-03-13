@@ -33,6 +33,7 @@ public class AppPreferences extends PreferenceActivity {
 							Object newValue) {
 						changeLanguage(newValue.toString());
 						return true;
+						
 					}
 				});
 	}
