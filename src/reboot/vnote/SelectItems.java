@@ -144,6 +144,13 @@ public class SelectItems extends Activity {
 		return auxstr;
 	}
 	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent a = new Intent(this,MainActivity.class);
+		startActivity(a);
+	}
+	
 	/** NOTE TEST **/
 	private void TEST_INSERT() {
 		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());

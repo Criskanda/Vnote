@@ -20,7 +20,7 @@ public class AppPreferences extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 
 		final ListPreference prefListLenguage = (ListPreference) findPreference("pref_lenguage");
-
+	
 		prefListLenguage
 				.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 					public boolean onPreferenceChange(Preference preference,

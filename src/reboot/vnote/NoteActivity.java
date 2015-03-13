@@ -91,6 +91,13 @@ public class NoteActivity extends Activity {
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent a = new Intent(this,MainActivity.class);
+		startActivity(a);
+	}
+	
 	private void CheckTypeNoteAndSave() {
 		if (CheckFields()) {
 			if (noteOpen != null) {

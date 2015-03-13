@@ -344,9 +344,10 @@ public class MainActivity extends Activity {
 	 * Start the activity to SelectItems class
 	 */
 	private void SelectItemsActivity() {
-		Intent newSerie = new Intent(MainActivity.this, SelectItems.class);
-		newSerie.putExtra("lastQuery", getLastQuery());
-		startActivity(newSerie);
+		Intent selecNotes = new Intent(MainActivity.this, SelectItems.class);
+		selecNotes.putExtra("lastQuery", getLastQuery());
+		startActivity(selecNotes);
+		finish();
 	}
 
 	private void TEST_INSERT() {
