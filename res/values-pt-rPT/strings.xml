@@ -24,4 +24,10 @@
 	<string name="save_ok">Salvo com Sucesso</string>
 	<string name="note_exists">Já existe uma anotação com esse título</string>
 	<string name="empty_fields">O campo de alguém está vazio</string>
+	<string name="by_date">Por Data</string>
+	<string name="by_title">Por Titulo</string>
+	<string name="english">Inglês</string>
+	<string name="spanish">Espanhol (castelhano) </string>
+	<string name="portuguese">Português</string>
+	
 </resources>
