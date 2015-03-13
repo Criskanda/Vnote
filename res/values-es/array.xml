@@ -2,21 +2,21 @@
 <resources>
 
     <string-array name="preference_order_notes">
-        <item>By Title</item>
-        <item>By Date</item>
+        <item>@string/by_title</item>
+        <item>@string/by_date</item>
     </string-array>
     <string-array name="preference_order_notes_val">
         <item>title</item>
         <item>date</item>
     </string-array>
     <string-array name="preference_lenguage">
-        <item>Ingles</item>
+        <item>@string/english</item>
         <!--
-        <item>Frances</item>
-        <item>Aleman</item>
+        <item>French</item>
+        <item>German</item>
         -->
-        <item>Español (Castellano)</item>
-        <item>Portugués</item>
+        <item>@string/spanish</item>
+        <item>@string/portuguese</item>
     </string-array>
     <string-array name="preference_lenguage_val">
         <item>US</item>

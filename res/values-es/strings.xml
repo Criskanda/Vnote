@@ -24,4 +24,10 @@
 	<string name="save_ok">Guardado Satisfactoriamente</string>
 	<string name="note_exists">Ya existe una nota con ese titulo</string>
 	<string name="empty_fields">Algunos campos están vacíos</string>
+	<string name="by_date">Por Fecha</string>
+	<string name="by_title">Por Titulo</string>
+	<string name="english">Inglés</string>
+	<string name="spanish">Español (Castellano)</string>
+	<string name="portuguese">Portugués</string>
+	
 </resources>
