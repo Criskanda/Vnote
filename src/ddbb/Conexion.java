@@ -51,7 +51,6 @@ public class Conexion extends SQLiteOpenHelper{
 	public void deleteNote(String title) {
 	    SQLiteDatabase db = getWritableDatabase();
 	    db.delete("notes", "title='"+title+"'", null);
-	    db.close();  
 	}
 	/**
 	 * 
