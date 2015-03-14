@@ -57,6 +57,13 @@ public class SelectItems extends Activity {
 		return true;
 	}
 
+	/** On resume refresh the listview */
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		db.close();
+	}
+	
 	/** Listener items menu **/
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

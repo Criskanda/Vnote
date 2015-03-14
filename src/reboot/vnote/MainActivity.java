@@ -214,6 +214,13 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/** On resume refresh the listview */
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		db.close();
+	}
+	
 	/** Import from the last **/
 	private void importFromLastVersion() throws IOException {
 		String sdCardRoot = Environment.getExternalStorageDirectory()
@@ -282,19 +289,19 @@ public class MainActivity extends Activity {
 	private void EraseOneNote(int position) {
 		final Note note = list.get(position);
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle("Do you want to DELETE the following note?");
+		alert.setTitle(R.string.warning_delete);
 		final TextView tv_alert = new TextView(this);
 		tv_alert.setText(note.getTitle());
 		alert.setView(tv_alert);
 
-		alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				con.deleteNote(note.getTitle());
 				FillListView();
 			}
 		});
-		alert.setNegativeButton("No", null);
+		alert.setNegativeButton(R.string.no, null);
 		alert.show();
 	}
 
