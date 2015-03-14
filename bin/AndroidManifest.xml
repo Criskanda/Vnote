@@ -29,7 +29,8 @@
         <activity
             android:name="reboot.vnote.NoteActivity"
             android:configChanges="locale|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="reboot.vnote.SelectItems"
             android:configChanges="locale|orientation"

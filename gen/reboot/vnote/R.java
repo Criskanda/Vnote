@@ -81,6 +81,7 @@ public final class R {
         public static final int lenguage=0x7f080011;
         public static final int lenguage_sumary=0x7f080012;
         public static final int listen=0x7f08000e;
+        public static final int no=0x7f08001f;
         public static final int note_content=0x7f08000b;
         public static final int note_exists=0x7f080017;
         public static final int note_title=0x7f080009;
@@ -97,6 +98,8 @@ public final class R {
         public static final int title_activity_new_note=0x7f080006;
         public static final int tv_content=0x7f08000a;
         public static final int tv_tittle=0x7f080008;
+        public static final int warning_delete=0x7f080020;
+        public static final int yes=0x7f08001e;
     }
     public static final class style {
         /** 
