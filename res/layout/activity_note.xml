@@ -23,7 +23,8 @@
             android:ems="10"
             android:inputType="textCapSentences"
             android:hint="@string/note_title"
-            android:textColor="@color/white" >
+            android:textColor="@color/white"
+           android:textCursorDrawable="@null" >
 
             <requestFocus />
         </EditText>
@@ -49,7 +50,8 @@
             android:ems="10"
             android:hint="@string/note_content"
             android:inputType="textMultiLine|textCapSentences"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textCursorDrawable="@null" />
 
         <TextView
             android:id="@+id/textView1"
