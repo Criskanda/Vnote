@@ -113,7 +113,7 @@ public class NoteActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}
 			} else if (InsertNote()) {
-				Toast.makeText(this, "Save Successfully", Toast.LENGTH_SHORT)
+				Toast.makeText(this,R.string.save_ok, Toast.LENGTH_SHORT)
 						.show();
 			} else {
 				Toast.makeText(this, R.string.note_exists, Toast.LENGTH_SHORT)
