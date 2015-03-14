@@ -8,18 +8,6 @@
         android:showAsAction="ifRoom"
         android:title="@string/save"/>
     <item
-        android:id="@+id/speach"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:orderInCategory="1"
-        android:showAsAction="ifRoom"
-        android:title="@string/speach"/>
-    <item
-        android:id="@+id/listen"
-        android:icon="@android:drawable/ic_lock_silent_mode_off"
-        android:orderInCategory="1"
-        android:showAsAction="ifRoom"
-        android:title="@string/listen"/>
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"

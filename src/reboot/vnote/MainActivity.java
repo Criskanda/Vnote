@@ -193,9 +193,6 @@ public class MainActivity extends Activity {
 		case R.id.delete:
 			EraseOneNote(menuInfo.position);
 			return true;
-		case R.id.listen:
-			// method listen
-			return true;
 		default:
 			return super.onContextItemSelected(item);
 		}

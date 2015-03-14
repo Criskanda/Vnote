@@ -84,12 +84,6 @@ public class NoteActivity extends Activity {
 		case R.id.save:
 			CheckTypeNoteAndSave();
 			return true;
-		case R.id.speach:
-			// metodoSpeach()
-			return true;
-		case R.id.listen:
-			// metodoListen()
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
