@@ -31,4 +31,7 @@
 	<string name="english">English</string>
 	<string name="spanish">Spanish (Castilian)</string>
 	<string name="portuguese">Portuguese</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="warning_delete">Do you want to DELETE the following note/s?</string>
 </resources>

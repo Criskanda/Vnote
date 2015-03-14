@@ -29,5 +29,7 @@
 	<string name="english">Inglês</string>
 	<string name="spanish">Espanhol (castelhano) </string>
 	<string name="portuguese">Português</string>
-	
+	<string name="yes">Sim</string>
+	<string name="no">Não</string>
+	<string name="warning_delete">Você deseja excluir a seguinte/s nota/s? </string>
 </resources>
