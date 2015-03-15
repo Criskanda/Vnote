@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="preference_order_notes">
+        <item>@string/by_title</item>
+        <item>@string/by_date</item>
+    </string-array>
+    <string-array name="preference_order_notes_val">
+        <item>title</item>
+        <item>date</item>
+    </string-array>
+    <string-array name="preference_lenguage">
+        <item>@string/english</item>
+        <item>@string/french</item>
+        <item>@string/german</item>
+        <item>@string/spanish</item>
+        <item>@string/portuguese</item>
+    </string-array>
+    <string-array name="preference_lenguage_val">
+        <item>US</item>
+        <item>FR</item>
+        <item>DE</item>
+        <item>ES</item>
+        <item>PT</item>
+    </string-array>
+
+</resources>

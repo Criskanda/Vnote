@@ -1,0 +1,39 @@
+<resources>
+
+    <string name="app_name">Vnote</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="search">Zoek</string>
+    <string name="add">Toevoegen</string>
+    <string name="delete">Verwijderen</string>
+    <string name="edit">Bewerken</string>
+    <string name="title_activity_new_note">Nieuwe notitie</string>
+    <string name="notes">Notities</string>
+    <string name="tv_tittle"><u>Title</u></string>
+    <string name="note_title">Note title</string>
+    <string name="tv_content"><u>Content</u></string>
+    <string name="note_content">Contents of the note</string>
+    <string name="save">Opslaan</string>
+    <string name="speach">Speech</string>
+    <string name="listen">Luisteren</string>
+    <string name="send">Versturen</string>
+    <string name="importlast">Import from last version</string>
+    <string name="lenguage">Taal</string>
+    <string name="lenguage_sumary">Select the application language</string>
+    <string name="order">Order</string>
+    <string name="order_sumary">Order by …</string>
+    <string name="files_not_found">No files found in the folder</string>
+    <string name="save_ok">Save Successfully</string>
+    <string name="note_exists">Already exist a note with that title</string>
+    <string name="empty_fields">Someone fields is empty</string>
+    <string name="by_date">By Date</string>
+    <string name="by_title">op titel</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish (Castilian)</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="französisch"> Französisch </string>
+    <string name="Deutsch"> deutschen </string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="warning_delete"> Wollen Sie den folgenden Hinweis/s löschen? </string>
+
+</resources>
