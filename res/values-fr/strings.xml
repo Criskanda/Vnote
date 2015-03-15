@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Vnote</string>
@@ -18,7 +19,7 @@
     <string name="lenguage">Langue</string>
     <string name="lenguage_sumary">Sélectionnez la langue de l\'application</string>
     <string name="order">Classement</string>
-    <string name="order_sumary">Classement par …</string>
+    <string name="order_sumary">Classement par &#8230;</string>
     <string name="files_not_found">Aucun résultat dans le dossier</string>
     <string name="save_ok">Enregistré terminée</string>
     <string name="note_exists">Il existe déjà une note à ce titre</string>
@@ -28,10 +29,10 @@
     <string name="english">Anglais</string>
     <string name="spanish">Espagnol (Castillan)</string>
     <string name="portuguese">Portuguais</string>
-    <string name="français">Français</string>
-    <string name="allemand">Allemand</string>
-    <string name="yes">Oui</string>
-    <string name="no">Non</string>
-    <string name="de warning_delete">Voulez-vous supprimer la note/s suivante?</string>
+    <string name="french">Français</string>
+    <string name="german">Allemand</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="de warning_delete">Voulez-vous supprimer la note/s suivante?</string>
 
 </resources>
