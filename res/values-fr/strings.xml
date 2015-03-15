@@ -1,0 +1,37 @@
+<resources>
+
+    <string name="app_name">Vnote</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="search">Recherche</string>
+    <string name="add">AJOUTER</string>
+    <string name="delete">Supprimer</string>
+    <string name="edit">Éditer</string>
+    <string name="title_activity_new_note">Nouvelle note</string>
+    <string name="notes">Notes</string>
+    <string name="tv_tittle"><u>Titre</u></string>
+    <string name="note_title">Titre de la note</string>
+    <string name="tv_content"><u>Contenu</u></string>
+    <string name="note_content">Contenu de la note</string>
+    <string name="save">Enregistrer</string>
+    <string name="send">Envoyer</string>
+    <string name="importlast">Importer depuis dernière version</string>
+    <string name="lenguage">Langue</string>
+    <string name="lenguage_sumary">Sélectionnez la langue de l\'application</string>
+    <string name="order">Classement</string>
+    <string name="order_sumary">Classement par …</string>
+    <string name="files_not_found">Aucun résultat dans le dossier</string>
+    <string name="save_ok">Enregistré terminée</string>
+    <string name="note_exists">Il existe déjà une note à ce titre</string>
+    <string name="empty_fields">Quelqu\'un champs est vide</string>
+    <string name="by_date">par date</string>
+    <string name="by_title">par titre</string>
+    <string name="english">Anglais</string>
+    <string name="spanish">Espagnol (Castillan)</string>
+    <string name="portuguese">Portuguais</string>
+    <string name="français">Français</string>
+    <string name="allemand">Allemand</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="de warning_delete">Voulez-vous supprimer la note/s suivante?</string>
+
+</resources>
