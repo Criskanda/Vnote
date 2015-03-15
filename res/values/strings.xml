@@ -26,12 +26,15 @@
     <string name="save_ok">Save Successfully</string>
     <string name="note_exists">Already exist a note with that title</string>
     <string name="empty_fields">Someone fields is empty</string>
-	<string name="by_date">By Date</string>
-	<string name="by_title">By Title</string>
-	<string name="english">English</string>
-	<string name="spanish">Spanish (Castilian)</string>
-	<string name="portuguese">Portuguese</string>
-	<string name="yes">Yes</string>
-	<string name="no">No</string>
-	<string name="warning_delete">Do you want to DELETE the following note/s?</string>
+    <string name="by_date">By Date</string>
+    <string name="by_title">By Title</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish (Castilian)</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="french">French</string>
+    <string name="german">German</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="warning_delete">Do you want to DELETE the following note/s?</string>
+
 </resources>
