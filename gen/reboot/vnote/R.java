@@ -29,6 +29,8 @@ public final class R {
     
  Default screen margins, per the Android Design guidelines. 
  Default screen margins, per the Android Design guidelines. 
+ Default screen margins, per the Android Design guidelines. 
+ Default screen margins, per the Android Design guidelines. 
          */
         public static final int activity_horizontal_margin=0x7f070000;
         public static final int activity_vertical_margin=0x7f070001;
@@ -77,11 +79,13 @@ public final class R {
         public static final int empty_fields=0x7f080018;
         public static final int english=0x7f08001b;
         public static final int files_not_found=0x7f080015;
+        public static final int french=0x7f08001e;
+        public static final int german=0x7f08001f;
         public static final int importlast=0x7f080010;
         public static final int lenguage=0x7f080011;
         public static final int lenguage_sumary=0x7f080012;
         public static final int listen=0x7f08000e;
-        public static final int no=0x7f08001f;
+        public static final int no=0x7f080021;
         public static final int note_content=0x7f08000b;
         public static final int note_exists=0x7f080017;
         public static final int note_title=0x7f080009;
@@ -98,8 +102,8 @@ public final class R {
         public static final int title_activity_new_note=0x7f080006;
         public static final int tv_content=0x7f08000a;
         public static final int tv_tittle=0x7f080008;
-        public static final int warning_delete=0x7f080020;
-        public static final int yes=0x7f08001e;
+        public static final int warning_delete=0x7f080022;
+        public static final int yes=0x7f080020;
     }
     public static final class style {
         /** 
@@ -140,9 +144,31 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+ Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
