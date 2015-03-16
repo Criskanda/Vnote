@@ -1,4 +1,4 @@
-package reboot.vnote;
+package cris.programa.vnote;
 
 import java.util.Locale;
 

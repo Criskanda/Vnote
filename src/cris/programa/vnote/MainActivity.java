@@ -1,4 +1,4 @@
-package reboot.vnote;
+package cris.programa.vnote;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,8 +36,6 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import ddbb.Conexion;
-import ddbb.Note;
 
 public class MainActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package ddbb;
+package cris.programa.vnote;
 
 public class Note {
 	 

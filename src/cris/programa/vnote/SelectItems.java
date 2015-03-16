@@ -1,4 +1,4 @@
-package reboot.vnote;
+package cris.programa.vnote;
 
 import java.util.ArrayList;
 
@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import ddbb.Conexion;
-import ddbb.Note;
 
 public class SelectItems extends Activity {
 

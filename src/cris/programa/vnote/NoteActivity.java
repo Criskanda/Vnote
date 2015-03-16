@@ -1,4 +1,4 @@
-package reboot.vnote;
+package cris.programa.vnote;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -14,8 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-import ddbb.Conexion;
-import ddbb.Note;
 
 public class NoteActivity extends Activity {
 
