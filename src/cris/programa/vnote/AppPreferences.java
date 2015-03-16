@@ -2,7 +2,6 @@ package cris.programa.vnote;
 
 import java.util.Locale;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -21,10 +20,6 @@ public class AppPreferences extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		
 		final ListPreference prefListLenguage = (ListPreference) findPreference("pref_lenguage");
 	
 		prefListLenguage

@@ -91,12 +91,12 @@ public class SelectItems extends Activity {
 		String listItemsSelected = getSelectedItemsString();
 		if (!listItemsSelected.equals("")) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("Do you want to DELETE the following notes?");
+			alert.setTitle(R.string.warning_delete);
 			final TextView tv_alert = new TextView(this);
 			tv_alert.setText(listItemsSelected);
 			alert.setView(tv_alert);
 
-			alert.setPositiveButton("Yes",
+			alert.setPositiveButton(R.string.yes,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -112,7 +112,7 @@ public class SelectItems extends Activity {
 							FillListView();
 						}
 					});
-			alert.setNegativeButton("No", null);
+			alert.setNegativeButton(R.string.no, null);
 			alert.show();
 		}
 	}
