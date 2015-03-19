@@ -8,12 +8,6 @@
         android:orderInCategory="4"
         android:showAsAction="ifRoom"
         android:title="@string/delete"/>
-      <item
-        android:id="@+id/send"
-        android:icon="@android:drawable/ic_menu_send"
-        android:orderInCategory="4"
-        android:showAsAction="ifRoom"
-        android:title="@string/send"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

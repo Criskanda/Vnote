@@ -121,7 +121,7 @@ public class SelectItems extends Activity {
 	private void FillListView() {
 		con = new Conexion(getApplicationContext(), "DBNotes.db", null, 1);
 		db = con.getWritableDatabase();
-		TEST_INSERT();
+		//TEST_INSERT();
 		Cursor a = db.rawQuery(getLastQuery(), null);
 		list.clear();
 		if (a.moveToFirst()) {

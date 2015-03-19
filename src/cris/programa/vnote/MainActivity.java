@@ -326,7 +326,7 @@ public class MainActivity extends Activity {
 	 * Fill the listview
 	 */
 	private void FillListView() {
-		TEST_INSERT();
+		//TEST_INSERT();
 		Cursor a = db.rawQuery(getLastQuery(), null);
 		list.clear();
 		if (a.moveToFirst()) {
