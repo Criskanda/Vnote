@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Vnote</string>
+    <string name="action_settings">设置</string>
+    <string name="search">搜索</string>
+    <string name="add">添加</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="title_activity_new_note">新笔记</string>
+    <string name="notes">笔记</string>
+    <string name="tv_tittle">标题</string>
+    <string name="note_title">笔记标题</string>
+    <string name="tv_content">内容</string>
+    <string name="note_content">笔记内容</string>
+    <string name="save">保存</string>
+    <string name="speach">语音</string>
+    <string name="listen">播放</string>
+    <string name="send">发送</string>
+    <string name="importlast">从旧版本导入</string>
+    <string name="lenguage">语言</string>
+    <string name="lenguage_sumary">选择APP语言</string>
+    <string name="order">顺序</string>
+    <string name="order_sumary">按 排序&#8230;</string>
+    <string name="files_not_found">空文件夹</string>
+    <string name="save_ok">保存成功</string>
+    <string name="note_exists">已存在同名笔记</string>
+    <string name="empty_fields">有人字段为空</string>
+    <string name="by_date">按日期</string>
+    <string name="by_title">按标题</string>
+    <string name="english">英语</string>
+    <string name="spanish">西班牙语</string>
+    <string name="portuguese">葡萄牙语</string>
+    <string name="french">法国</string>
+    <string name="german">德国</string>
+    <string name="yes">是的</string>
+    <string name="no">没有</string>
+    <string name="warning_delete">你想删除以下注意事项？</string>
+    <string name="chinese">中国</string>
+
+</resources>
