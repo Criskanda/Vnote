@@ -15,7 +15,7 @@
         <item>@string/german</item>
         <item>@string/spanish</item>
         <item>@string/portuguese</item>
-        <item>sdadadad</item>
+        <item>@string/chinese</item>
     </string-array>
     <string-array name="preference_lenguage_val">
         <item>US</item>
@@ -23,6 +23,7 @@
         <item>DE</item>
         <item>ES</item>
         <item>PT</item>
+        <item>ZH</item>
     </string-array>
 
 </resources>

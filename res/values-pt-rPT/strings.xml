@@ -34,5 +34,6 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="warning_delete">Você deseja excluir a seguinte/s nota/s? </string>
-
+    <string name="chinese">Chinês</string>
+    
 </resources>

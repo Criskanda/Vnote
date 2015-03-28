@@ -34,5 +34,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="warning_delete">Wollen Sie den folgenden Hinweis/s löschen?</string>
-
+    <string name="chinese">Chinese</string>
+    
 </resources>

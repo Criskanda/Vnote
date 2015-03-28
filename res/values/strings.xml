@@ -34,5 +34,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="warning_delete">Do you want to DELETE the following note/s?</string>
-
+    <string name="chinese">Chinese</string>
+    
 </resources>
