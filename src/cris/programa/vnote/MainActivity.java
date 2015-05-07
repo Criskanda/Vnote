@@ -351,9 +351,9 @@ public class MainActivity extends Activity {
 		finish();
 	}
 
-	private void TEST_INSERT() {
-		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
-	}
+//	private void TEST_INSERT() {
+//		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
+//	}
 
 	/**
 	 * @return the lastQuery

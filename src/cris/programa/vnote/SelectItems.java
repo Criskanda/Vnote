@@ -160,10 +160,10 @@ public class SelectItems extends Activity {
 		
 	}
 
-	/** NOTE TEST **/
-	private void TEST_INSERT() {
-		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
-	}
+//	/** NOTE TEST **/
+//	private void TEST_INSERT() {
+//		con.InsertNote(db, con.getToday(), con.getToday(), con.getToday());
+//	}
 
 	/** GETTERS AND SETTERS **/
 	public SparseBooleanArray getSelectedItems() {
